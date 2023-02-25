@@ -1,39 +1,41 @@
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import { FunctionComponent } from 'react'
-import Login from './Login'
-import Register from './Register'
-import ForgotPass from './ForgotPass'
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { FunctionComponent } from "react";
+import ForgotPass from "./Auth/ForgotPass";
+import Login from "./Auth/Login";
+import Register from "./Auth/Register";
+import ResetPass from "./Auth/ResetPass";
 
-export type RootStackParamList = {
-  Login: undefined
-  Register: undefined
-  ForgotPass: undefined
-}
-
-const Stack = createStackNavigator<RootStackParamList>()
+const Stack = createStackNavigator<any>();
 
 const RootStack: FunctionComponent = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
-          name='Login'
-          component={Login}
-          options={{ headerShown: false }}></Stack.Screen>
-
-        <Stack.Screen
-          name='Register'
-          component={Register}
-          options={{ headerShown: false }}></Stack.Screen>
-
-        <Stack.Screen
-          name='ForgotPass'
+          name="ForgotPass"
           component={ForgotPass}
-          options={{ headerShown: false }}></Stack.Screen>
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="Register"
+          component={Register}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+
+        <Stack.Screen
+          name="ResetPass"
+          component={ResetPass}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
-  )
-}
+  );
+};
 
-export default RootStack
+export default RootStack;

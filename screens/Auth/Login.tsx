@@ -1,20 +1,19 @@
-import { yupResolver } from '@hookform/resolvers/yup'
-import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Controller, useForm } from "react-hook-form";
 import {
+  Alert,
+  KeyboardAvoidingView,
   SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
-} from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import { loginSchema } from '../schemas/auth'
-import Button from '../components/common/Button/Button'
-import ButtonText from '../components/common/Button/ButtonText'
-import { KeyboardAvoidingView } from 'react-native'
-import { Alert } from 'react-native'
+} from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Button from "../../components/common/Button/Button";
+import ButtonText from "../../components/common/Button/ButtonText";
+import { loginSchema } from "../../schemas/auth";
 
 const Login = ({ navigation }: { navigation: any }) => {
   const {
@@ -23,30 +22,31 @@ const Login = ({ navigation }: { navigation: any }) => {
     formState: { errors, isSubmitting, isValid },
   } = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     resolver: yupResolver(loginSchema),
-  })
+  });
 
   const onSubmit = (data: any) => {
-    console.log('🚀 ~ file: Login.tsx:22 ~ onSubmit ~ data', data)
+    console.log("🚀 ~ file: Login.tsx:22 ~ onSubmit ~ data", data);
 
     Alert.prompt(
-      'Thông Báo',
-      'Chúng tôi đã gửi 1 mã OTP đến điện thoại của bạn ',
+      "Thông Báo",
+      "Chúng tôi đã gửi 1 mã OTP đến điện thoại của bạn ",
       (data) => {
-        console.log('🚀 ~ file: Login.tsx:36 ~ Alert.prompt ~ data', data)
+        console.log("🚀 ~ file: Login.tsx:36 ~ Alert.prompt ~ data", data);
       }
-    )
-  }
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
-        behavior='padding'
-        style={{ paddingHorizontal: 25 }}>
-        <View style={{ alignItems: 'center' }}>
+        behavior="padding"
+        style={{ paddingHorizontal: 25 }}
+      >
+        <View style={{ alignItems: "center" }}>
           <Text>Logo in here</Text>
         </View>
 
@@ -58,12 +58,12 @@ const Login = ({ navigation }: { navigation: any }) => {
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
                 <MaterialIcons
-                  name='alternate-email'
+                  name="alternate-email"
                   size={20}
                   style={styles.iconInput}
                 />
                 <TextInput
-                  placeholder='Email'
+                  placeholder="Email"
                   style={{ flex: 1, paddingVertical: 0 }}
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
@@ -71,11 +71,11 @@ const Login = ({ navigation }: { navigation: any }) => {
                 />
               </View>
               {errors.email && (
-                <Text style={{ color: 'red' }}>{errors.email?.message}</Text>
+                <Text style={{ color: "red" }}>{errors.email?.message}</Text>
               )}
             </View>
           )}
-          name='email'
+          name="email"
           rules={{ required: true }}
         />
 
@@ -85,12 +85,12 @@ const Login = ({ navigation }: { navigation: any }) => {
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
                 <Ionicons
-                  name='lock-closed-outline'
+                  name="lock-closed-outline"
                   size={20}
                   style={styles.iconInput}
                 />
                 <TextInput
-                  placeholder='Password'
+                  placeholder="Password"
                   secureTextEntry
                   style={{ flex: 1, paddingVertical: 0 }}
                   onBlur={onBlur}
@@ -98,17 +98,17 @@ const Login = ({ navigation }: { navigation: any }) => {
                   value={value}
                 />
               </View>
-              {errors.email && (
-                <Text style={{ color: 'red' }}>{errors.password?.message}</Text>
+              {errors.password && (
+                <Text style={{ color: "red" }}>{errors.password?.message}</Text>
               )}
             </View>
           )}
-          name='password'
+          name="password"
           rules={{ required: true }}
         />
 
-        <View style={{ alignItems: 'flex-end' }}>
-          <ButtonText onPress={() => navigation.navigate('ForgotPass')}>
+        <View style={{ alignItems: "flex-end" }}>
+          <ButtonText onPress={() => navigation.navigate("ForgotPass")}>
             Quên mật khẩu ?
           </ButtonText>
         </View>
@@ -118,40 +118,42 @@ const Login = ({ navigation }: { navigation: any }) => {
           style={{
             ...styles.buttonLogin,
             opacity: isSubmitting || !isValid ? 0.3 : 1,
-          }}>
+          }}
+        >
           Đăng nhập
         </Button>
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
+            flexDirection: "row",
+            justifyContent: "center",
             marginBottom: 30,
-          }}>
+          }}
+        >
           <Text>Bạn là người mới </Text>
 
-          <ButtonText onPress={() => navigation.navigate('Register')}>
+          <ButtonText onPress={() => navigation.navigate("Register")}>
             Đăng ký ngay ?
           </ButtonText>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   headerText: {
     fontSize: 28,
-    fontWeight: '500',
-    color: '#333',
+    fontWeight: "500",
+    color: "#333",
     marginBottom: 30,
   },
   textFeild: {
-    flexDirection: 'row',
-    borderBottomColor: '#ccc',
+    flexDirection: "row",
+    borderBottomColor: "#ccc",
     borderBottomWidth: 1,
     paddingBottom: 8,
     marginBottom: 10,
@@ -159,16 +161,16 @@ export const styles = StyleSheet.create({
 
   iconInput: {
     marginRight: 5,
-    color: '#555',
+    color: "#555",
   },
 
   buttonLogin: {
-    backgroundColor: '#1A94FF',
+    backgroundColor: "#1A94FF",
     padding: 20,
     borderRadius: 10,
     marginBottom: 30,
     marginTop: 10,
   },
-})
+});
 
-export default Login
+export default Login;

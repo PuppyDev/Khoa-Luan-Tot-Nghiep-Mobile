@@ -1,14 +1,14 @@
-import { Controller } from 'react-hook-form'
-import { useForm } from 'react-hook-form'
-import { Alert } from 'react-native'
-import { TouchableOpacity } from 'react-native'
-import { TextInput } from 'react-native'
-import { StyleSheet, Text, View } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import Button from '../components/common/Button/Button'
-import { KeyboardAvoidingView } from 'react-native'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
+import { Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { Alert } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { TextInput } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { KeyboardAvoidingView } from "react-native";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import Button from "../../components/common/Button/Button";
 
 const ForgotPass = ({ navigation }: { navigation: any }) => {
   const {
@@ -17,37 +17,37 @@ const ForgotPass = ({ navigation }: { navigation: any }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: '',
+      email: "",
     },
     resolver: yupResolver(
       yup.object({
         email: yup
           .string()
-          .email('Nhập sai định dạng email')
-          .required('Vui lòng nhập Email'),
+          .email("Nhập sai định dạng email")
+          .required("Vui lòng nhập Email"),
       })
     ),
-  })
+  });
 
   const sendMail = () => {
     Alert.alert(
-      'Thông báo',
-      'Chúng tôi đã gửi 1 email khôi phục tới tài khoản của bạn !!!',
+      "Thông báo",
+      "Chúng tôi đã gửi 1 email khôi phục tới tài khoản của bạn !!!",
       [
         {
-          text: 'Về trang đăng nhập',
-          onPress: () => navigation.navigate('Login'),
+          text: "Về trang đăng nhập",
+          onPress: () => navigation.navigate("ResetPass"),
         },
       ]
-    )
-  }
+    );
+  };
 
   return (
-    <KeyboardAvoidingView behavior='padding' style={styles.container}>
-      <View style={{ alignItems: 'center' }}>
+    <KeyboardAvoidingView style={styles.container}>
+      <View style={{ alignItems: "center" }}>
         <View style={styles.blockIconLock}>
           <Ionicons
-            name='lock-closed-outline'
+            name="lock-closed-outline"
             size={20}
             style={{ fontSize: 50 }}
           />
@@ -57,15 +57,17 @@ const ForgotPass = ({ navigation }: { navigation: any }) => {
         style={{
           marginTop: 20,
           paddingHorizontal: 25,
-        }}>
+        }}
+      >
         <Text
           style={{
-            textAlign: 'center',
+            textAlign: "center",
             marginBottom: 20,
             fontSize: 17,
-            fontWeight: '500',
-            color: 'black',
-          }}>
+            fontWeight: "500",
+            color: "black",
+          }}
+        >
           Bạn đang gặp sự cố đăng nhập ?
         </Text>
 
@@ -74,66 +76,67 @@ const ForgotPass = ({ navigation }: { navigation: any }) => {
           render={({ field: { onChange, onBlur, value } }) => (
             <View style={{ marginBottom: 10 }}>
               <TextInput
-                placeholder='Tài khoản hoặc địa chỉ email'
+                placeholder="Tài khoản hoặc địa chỉ email"
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
                 value={value}
                 style={styles.textFeild}
               />
               {errors.email && (
-                <Text style={{ color: 'red' }}>{errors.email?.message}</Text>
+                <Text style={{ color: "red" }}>{errors.email?.message}</Text>
               )}
             </View>
           )}
-          name='email'
+          name="email"
           rules={{ required: false }}
         />
         <Button
           onPress={handleSubmit(sendMail)}
           style={{
-            backgroundColor: '#1A94FF',
+            backgroundColor: "#1A94FF",
             padding: 20,
             borderRadius: 10,
             marginBottom: 30,
-          }}>
+          }}
+        >
           Tiếp tục
         </Button>
       </View>
     </KeyboardAvoidingView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 
   blockIconLock: {
     borderRadius: 100,
     borderWidth: 2,
-    borderColor: 'black',
+    borderColor: "black",
 
     width: 100,
     height: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   textFeild: {
-    flexDirection: 'row',
-    borderColor: '#ccc',
+    flexDirection: "row",
+    borderColor: "#ccc",
     borderWidth: 1,
     marginBottom: 10,
     padding: 20,
     borderRadius: 5,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
 
   iconInput: {
     marginRight: 5,
-    color: '#554',
+    color: "#554",
   },
-})
+});
 
-export default ForgotPass
+export default ForgotPass;

@@ -1,5 +1,5 @@
-import { yupResolver } from '@hookform/resolvers/yup'
-import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Controller, useForm } from "react-hook-form";
 import {
   KeyboardAvoidingView,
   SafeAreaView,
@@ -7,20 +7,20 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import Button from '../components/common/Button/Button'
-import ButtonText from '../components/common/Button/ButtonText'
-import { signUpSchema } from '../schemas/auth'
+} from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Button from "../../components/common/Button/Button";
+import ButtonText from "../../components/common/Button/ButtonText";
+import { signUpSchema } from "../../schemas/auth";
 
 const initDefaultValues = {
-  email: '',
-  password: '',
-  confirmPass: '',
-  phone: '',
-  name: '',
-}
+  email: "",
+  password: "",
+  confirmPass: "",
+  phone: "",
+  name: "",
+};
 
 const Register = ({ navigation }: { navigation: any }) => {
   const {
@@ -30,18 +30,19 @@ const Register = ({ navigation }: { navigation: any }) => {
   } = useForm({
     defaultValues: initDefaultValues,
     resolver: yupResolver(signUpSchema),
-  })
+  });
 
   const onSubmit = (data: any) => {
-    console.log('🚀 ~ file: Register.tsx:29 ~ onSubmit ~ data', data)
-  }
+    console.log("🚀 ~ file: Register.tsx:29 ~ onSubmit ~ data", data);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
-        behavior='padding'
-        style={{ paddingHorizontal: 25 }}>
-        <View style={{ alignItems: 'center' }}>
+        behavior="padding"
+        style={{ paddingHorizontal: 25 }}
+      >
+        <View style={{ alignItems: "center" }}>
           <Text>Logo in here</Text>
         </View>
 
@@ -53,12 +54,12 @@ const Register = ({ navigation }: { navigation: any }) => {
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
                 <Ionicons
-                  name='person-circle-outline'
+                  name="person-circle-outline"
                   size={20}
                   style={styles.iconInput}
                 />
                 <TextInput
-                  placeholder='Họ và Tên'
+                  placeholder="Họ và Tên"
                   style={{ flex: 1, paddingVertical: 0 }}
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
@@ -66,11 +67,11 @@ const Register = ({ navigation }: { navigation: any }) => {
                 />
               </View>
               {errors.name && (
-                <Text style={{ color: 'red' }}>{errors.name?.message}</Text>
+                <Text style={{ color: "red" }}>{errors.name?.message}</Text>
               )}
             </View>
           )}
-          name='name'
+          name="name"
           rules={{ required: false }}
         />
 
@@ -80,12 +81,12 @@ const Register = ({ navigation }: { navigation: any }) => {
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
                 <Ionicons
-                  name='call-outline'
+                  name="call-outline"
                   size={20}
                   style={styles.iconInput}
                 />
                 <TextInput
-                  placeholder='Số điện thoại'
+                  placeholder="Số điện thoại"
                   style={{ flex: 1, paddingVertical: 0 }}
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
@@ -93,11 +94,11 @@ const Register = ({ navigation }: { navigation: any }) => {
                 />
               </View>
               {errors.phone && (
-                <Text style={{ color: 'red' }}>{errors.phone?.message}</Text>
+                <Text style={{ color: "red" }}>{errors.phone?.message}</Text>
               )}
             </View>
           )}
-          name='phone'
+          name="phone"
           rules={{ required: false }}
         />
 
@@ -107,12 +108,12 @@ const Register = ({ navigation }: { navigation: any }) => {
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
                 <MaterialIcons
-                  name='alternate-email'
+                  name="alternate-email"
                   size={20}
                   style={styles.iconInput}
                 />
                 <TextInput
-                  placeholder='Email'
+                  placeholder="Email"
                   style={{ flex: 1, paddingVertical: 0 }}
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
@@ -120,11 +121,11 @@ const Register = ({ navigation }: { navigation: any }) => {
                 />
               </View>
               {errors.email && (
-                <Text style={{ color: 'red' }}>{errors.email?.message}</Text>
+                <Text style={{ color: "red" }}>{errors.email?.message}</Text>
               )}
             </View>
           )}
-          name='email'
+          name="email"
           rules={{ required: true }}
         />
 
@@ -134,12 +135,12 @@ const Register = ({ navigation }: { navigation: any }) => {
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
                 <Ionicons
-                  name='lock-closed-outline'
+                  name="lock-closed-outline"
                   size={20}
                   style={styles.iconInput}
                 />
                 <TextInput
-                  placeholder='Mật khẩu'
+                  placeholder="Mật khẩu"
                   secureTextEntry
                   style={{ flex: 1, paddingVertical: 0 }}
                   onBlur={onBlur}
@@ -148,11 +149,11 @@ const Register = ({ navigation }: { navigation: any }) => {
                 />
               </View>
               {errors.password && (
-                <Text style={{ color: 'red' }}>{errors.password?.message}</Text>
+                <Text style={{ color: "red" }}>{errors.password?.message}</Text>
               )}
             </View>
           )}
-          name='password'
+          name="password"
           rules={{ required: true }}
         />
 
@@ -162,12 +163,12 @@ const Register = ({ navigation }: { navigation: any }) => {
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
                 <Ionicons
-                  name='lock-closed-outline'
+                  name="lock-closed-outline"
                   size={20}
                   style={styles.iconInput}
                 />
                 <TextInput
-                  placeholder='Xác nhận mật khẩu'
+                  placeholder="Xác nhận mật khẩu"
                   secureTextEntry
                   style={{ flex: 1, paddingVertical: 0 }}
                   onBlur={onBlur}
@@ -176,13 +177,13 @@ const Register = ({ navigation }: { navigation: any }) => {
                 />
               </View>
               {errors.confirmPass && (
-                <Text style={{ color: 'red' }}>
+                <Text style={{ color: "red" }}>
                   {errors.confirmPass?.message}
                 </Text>
               )}
             </View>
           )}
-          name='confirmPass'
+          name="confirmPass"
           rules={{ required: true }}
         />
         <Button onPress={handleSubmit(onSubmit)} style={styles.buttonLogin}>
@@ -191,38 +192,40 @@ const Register = ({ navigation }: { navigation: any }) => {
 
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
+            flexDirection: "row",
+            justifyContent: "center",
             marginBottom: 30,
-          }}>
+          }}
+        >
           <Text>Bạn đã có tài khoản </Text>
 
           <ButtonText
             onPress={() => {
-              navigation.navigate('Login')
-            }}>
+              navigation.navigate("Login");
+            }}
+          >
             Đăng nhập ngay ?
           </ButtonText>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   headerText: {
     fontSize: 28,
-    fontWeight: '500',
-    color: '#333',
+    fontWeight: "500",
+    color: "#333",
     marginBottom: 30,
   },
   textFeild: {
-    flexDirection: 'row',
-    borderBottomColor: '#ccc',
+    flexDirection: "row",
+    borderBottomColor: "#ccc",
     borderBottomWidth: 1,
     paddingBottom: 8,
     marginBottom: 10,
@@ -230,16 +233,16 @@ const styles = StyleSheet.create({
 
   iconInput: {
     marginRight: 5,
-    color: '#555',
+    color: "#555",
   },
 
   buttonLogin: {
-    backgroundColor: '#1A94FF',
+    backgroundColor: "#1A94FF",
     padding: 20,
     borderRadius: 10,
     marginBottom: 30,
     marginTop: 10,
   },
-})
+});
 
-export default Register
+export default Register;
