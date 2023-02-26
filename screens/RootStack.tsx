@@ -5,6 +5,8 @@ import ForgotPass from "./Auth/ForgotPass";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
 import ResetPass from "./Auth/ResetPass";
+import DetailsScreen from "./Home/DetailScreen";
+import HomeScreen from "./Home/HomeScreen";
 
 const Stack = createStackNavigator<any>();
 
@@ -33,6 +35,18 @@ const RootStack: FunctionComponent = () => {
           component={ResetPass}
           options={{ headerShown: false }}
         ></Stack.Screen>
+
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="DetailsScreen"
+          component={DetailsScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

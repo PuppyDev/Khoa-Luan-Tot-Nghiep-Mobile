@@ -30,14 +30,7 @@ const Login = ({ navigation }: { navigation: any }) => {
 
   const onSubmit = (data: any) => {
     console.log("🚀 ~ file: Login.tsx:22 ~ onSubmit ~ data", data);
-
-    Alert.prompt(
-      "Thông Báo",
-      "Chúng tôi đã gửi 1 mã OTP đến điện thoại của bạn ",
-      (data) => {
-        console.log("🚀 ~ file: Login.tsx:36 ~ Alert.prompt ~ data", data);
-      }
-    );
+    navigation.navigate("HomeScreen");
   };
 
   return (

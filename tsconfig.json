@@ -25,6 +25,7 @@
     "paths": {
       "@/components/*": ["./components/*"],
       "@/common/*": ["./components/common/*"],
+      "@/consts/*": ["./consts/*"],
       "@/api/*": ["./api/*"],
       "@/app/*": ["./app/*"],
       "@/assets/*": ["./assets/*"],
