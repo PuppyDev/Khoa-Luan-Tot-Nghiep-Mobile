@@ -157,7 +157,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.white }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <StatusBar
         barStyle="light-content"
         translucent
@@ -250,7 +250,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           renderItem={({ item }) => <TopHotelCard hotel={item} />}
         />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
