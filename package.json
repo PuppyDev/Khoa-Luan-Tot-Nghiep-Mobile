@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@ant-design/react-native": "^5.0.4",
     "@hookform/resolvers": "^2.9.10",
     "@react-native-camera-roll/camera-roll": "^5.2.4",
     "@react-native-community/segmented-control": "^2.2.2",
