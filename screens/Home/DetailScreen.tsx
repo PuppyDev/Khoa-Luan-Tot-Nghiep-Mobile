@@ -208,7 +208,7 @@ DetailsScreen.Card = ({ label, children }: IProps) => {
 
 const style = StyleSheet.create({
   btn: {
-    height: 45,
+    height: 60,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,

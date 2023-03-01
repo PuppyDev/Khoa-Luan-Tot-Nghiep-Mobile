@@ -5,9 +5,8 @@ import ForgotPass from "./Auth/ForgotPass";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
 import ResetPass from "./Auth/ResetPass";
+import BottomScreen from "./BottomScreen";
 import DetailsScreen from "./Home/DetailScreen";
-import HomeScreen from "./Home/HomeScreen";
-
 const Stack = createStackNavigator<any>();
 
 const RootStack: FunctionComponent = () => {
@@ -37,16 +36,16 @@ const RootStack: FunctionComponent = () => {
         ></Stack.Screen>
 
         <Stack.Screen
-          name="HomeScreen"
-          component={HomeScreen}
+          name="BottomScreen"
+          component={BottomScreen}
           options={{ headerShown: false }}
-        />
+        ></Stack.Screen>
 
         <Stack.Screen
-          name="DetailsScreen"
+          name="DetailScreen"
           component={DetailsScreen}
           options={{ headerShown: false }}
-        />
+        ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

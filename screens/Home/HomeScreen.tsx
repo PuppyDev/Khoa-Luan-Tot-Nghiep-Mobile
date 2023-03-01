@@ -85,7 +85,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       <TouchableOpacity
         disabled={activeCardIndex != index}
         activeOpacity={1}
-        onPress={() => navigation.navigate("DetailsScreen", hotel)}
+        onPress={() => navigation.navigate("DetailScreen", hotel)}
       >
         <Animated.View style={{ ...style.card, transform: [{ scale }] }}>
           <Animated.View style={{ ...style.cardOverLay, opacity }} />
@@ -185,17 +185,19 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={style.searchInputContainer}>
-          <Icon name="search" size={30} style={{ marginLeft: 20 }} />
-          <TextInput
-            placeholder="Search"
-            style={{
-              fontSize: 20,
-              paddingLeft: 10,
-              width: "100%",
-            }}
-          />
-        </View>
+        <TouchableOpacity onPress={() => navigation.navigate("Search")}>
+          <View style={style.searchInputContainer}>
+            <Icon name="search" size={30} style={{ marginLeft: 20 }} />
+            <TextInput
+              placeholder="Search"
+              style={{
+                fontSize: 20,
+                paddingLeft: 10,
+                width: "100%",
+              }}
+            />
+          </View>
+        </TouchableOpacity>
 
         <CategoryList navigation={navigation} />
 

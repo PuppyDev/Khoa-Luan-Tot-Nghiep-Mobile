@@ -1715,11 +1715,6 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@react-native-camera-roll/camera-roll@^5.2.4":
-  version "5.2.4"
-  resolved "https://registry.yarnpkg.com/@react-native-camera-roll/camera-roll/-/camera-roll-5.2.4.tgz#216d0ea4656b6538c10b60f057118c6f5e704c0d"
-  integrity sha512-pEQDartgO8Nqy6QDm1efvIPpv4q5W+AtTgS05JGK/9x8VzSj8fJ/cvHmMZBlm/4sFpJyvJZ+1KYxKsvFJLbGuQ==
-
 "@react-native-community/cli-clean@^9.2.1":
   version "9.2.1"
   resolved "https://registry.npmjs.org/@react-native-community/cli-clean/-/cli-clean-9.2.1.tgz"
@@ -1914,11 +1909,6 @@
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.4.2.tgz#1fea0eb3ae31841fe87bd6c4fc67569066e9cf4b"
   integrity sha512-D9bv+3Vd2gairAhnRPAghwccgEmoM7g562pm8i4qB3Esrms5mggF81G3UvCyc0w3jjtFHh8dpQkfEoKiP0NW/Q==
-
-"@react-native-picker/picker@^2.4.8":
-  version "2.4.8"
-  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.4.8.tgz#a1a21f3d6ecadedbc3f0b691a444ddd7baa081f8"
-  integrity sha512-5NQ5XPo1B03YNqKFrV6h9L3CQaHlB80wd4ETHUEABRP2iLh7FHLVObX2GfziD+K/VJb8G4KZcZ23NFBFP1f7bg==
 
 "@react-native/assets@1.0.0":
   version "1.0.0"

@@ -30,7 +30,7 @@ const Login = ({ navigation }: { navigation: any }) => {
 
   const onSubmit = (data: any) => {
     console.log("🚀 ~ file: Login.tsx:22 ~ onSubmit ~ data", data);
-    navigation.navigate("HomeScreen");
+    navigation.navigate("BottomScreen");
   };
 
   return (
