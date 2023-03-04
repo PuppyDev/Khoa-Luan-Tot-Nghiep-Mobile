@@ -1,0 +1,66 @@
+import { Controller } from "react-hook-form";
+
+import { StyleSheet, Text } from "react-native";
+import { TextInput } from "react-native-element-textinput";
+import COLORS from "../../../consts/colors";
+
+const Input = ({
+  control,
+  name,
+  label,
+  placeholder,
+}: {
+  control: any;
+  name: string;
+  placeholder: string;
+  label?: string;
+}) => {
+  return (
+    <Controller
+      control={control}
+      render={({ field }) => (
+        <>
+          <TextInput
+            style={style.inputTextFeild}
+            inputStyle={style.inputStyle}
+            labelStyle={style.labelStyle}
+            placeholderStyle={style.placeholderStyle}
+            textErrorStyle={style.textErrorStyle}
+            placeholder={placeholder}
+            placeholderTextColor="gray"
+            focusColor={COLORS.primary}
+            {...field}
+            onChangeText={(text) => {
+              field.onChange(text);
+            }}
+          />
+        </>
+      )}
+      name={name}
+    />
+  );
+};
+
+const style = StyleSheet.create({
+  inputTextFeild: {
+    height: 55,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#DDDDDD",
+    marginVertical: 10,
+  },
+  inputStyle: { fontSize: 16 },
+  labelStyle: {
+    fontSize: 14,
+    position: "absolute",
+    top: -10,
+    backgroundColor: "white",
+    paddingHorizontal: 4,
+    marginLeft: -4,
+  },
+  placeholderStyle: { fontSize: 16 },
+  textErrorStyle: { fontSize: 16 },
+});
+
+export default Input;

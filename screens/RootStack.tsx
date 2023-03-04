@@ -1,12 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { FunctionComponent } from "react";
+import ChangePass from "./Auth/ChangePass";
 import ForgotPass from "./Auth/ForgotPass";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
 import ResetPass from "./Auth/ResetPass";
 import BottomScreen from "./BottomScreen";
 import DetailsScreen from "./Home/DetailScreen";
+import AddRoomScreen from "./Room/AddRoomScreen";
 const Stack = createStackNavigator<any>();
 
 const RootStack: FunctionComponent = () => {
@@ -42,8 +44,20 @@ const RootStack: FunctionComponent = () => {
         ></Stack.Screen>
 
         <Stack.Screen
+          name="AddroomScreen"
+          component={AddRoomScreen}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+
+        <Stack.Screen
           name="DetailScreen"
           component={DetailsScreen}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+
+        <Stack.Screen
+          name="ChangePassScreen"
+          component={ChangePass}
           options={{ headerShown: false }}
         ></Stack.Screen>
       </Stack.Navigator>

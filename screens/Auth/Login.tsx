@@ -13,6 +13,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Button from "../../components/common/Button/Button";
 import ButtonText from "../../components/common/Button/ButtonText";
+import COLORS from "../../consts/colors";
 import { loginSchema } from "../../schemas/auth";
 
 const Login = ({ navigation }: { navigation: any }) => {
@@ -158,7 +159,7 @@ export const styles = StyleSheet.create({
   },
 
   buttonLogin: {
-    backgroundColor: "#1A94FF",
+    backgroundColor: COLORS.primary,
     padding: 20,
     borderRadius: 10,
     marginBottom: 30,

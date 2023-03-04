@@ -9,8 +9,8 @@ import {
   View,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Button from "../Button/Button";
+import MainHeader from "../Header/MainHeader";
 
 const PassComp = ({
   isChangePassWord = false,
@@ -48,6 +48,38 @@ const PassComp = ({
         <Text style={styles.headerText}>
           {isChangePassWord ? "Đổi Mật Khẩu" : "Mật Khẩu Mới"}
         </Text>
+
+        {isChangePassWord && (
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <View style={{ marginBottom: 20 }}>
+                <View style={styles.textFeild}>
+                  <Ionicons
+                    name="lock-closed-outline"
+                    size={20}
+                    style={styles.iconInput}
+                  />
+                  <TextInput
+                    placeholder="Mật khẩu hiện tại"
+                    secureTextEntry
+                    style={{ flex: 1, paddingVertical: 0 }}
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                  />
+                </View>
+                {errors.newPassWord && (
+                  <Text style={{ color: "red" }}>
+                    {errors.newPassWord?.message}
+                  </Text>
+                )}
+              </View>
+            )}
+            name="password"
+            rules={{ required: true }}
+          />
+        )}
 
         <Controller
           control={control}
