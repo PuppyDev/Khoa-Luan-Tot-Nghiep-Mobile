@@ -108,7 +108,8 @@ const Login = ({ navigation }: { navigation: any }) => {
         </View>
 
         <Button
-          onPress={handleSubmit(onSubmit)}
+          // onPress={handleSubmit(onSubmit)}
+          onPress={() => navigation.navigate("BottomScreen")}
           style={{
             ...styles.buttonLogin,
             opacity: isSubmitting || !isValid ? 0.3 : 1,

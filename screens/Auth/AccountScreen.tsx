@@ -1,5 +1,5 @@
 import React from "react";
-import { View, SafeAreaView, StyleSheet } from "react-native";
+import { View, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
 import {
   Avatar,
   Title,
@@ -62,7 +62,8 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.infoBoxWrapper}>
-        <View
+        <TouchableOpacity
+          onPress={() => navigation.navigate("WalletScreen")}
           style={[
             styles.infoBox,
             {
@@ -72,21 +73,29 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
           ]}
         >
           <Title>$140.50</Title>
-          <Caption>Wallet</Caption>
-        </View>
-        <View style={styles.infoBox}>
+          <Caption>Wallet Bughouse</Caption>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("RoomRentedScreen")}
+          style={[
+            styles.infoBox,
+            {
+              borderRightColor: "#dddddd",
+              borderRightWidth: 1,
+            },
+          ]}
+        >
           <Title>2</Title>
           <Caption>Rooms rented</Caption>
-        </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={() => navigation.navigate("WalletScreen")}>
           <View style={styles.menuItem}>
-            {/* <Icon name="credit-card" color="#FF6347" size={25}/> */}
             <Ionicons name="cash-outline" size={25} color="#777777" />
 
-            <Text style={styles.menuItemText}>Payment</Text>
+            <Text style={styles.menuItemText}> Wallet </Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate("AddroomScreen")}>
@@ -95,10 +104,10 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
             <Text style={styles.menuItemText}>Publish Room</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={() => navigation.navigate("RoomForRentScreen")}>
           <View style={styles.menuItem}>
             <Ionicons name="hammer-outline" size={25} color="#777777" />
-            <Text style={styles.menuItemText}>For rent</Text>
+            <Text style={styles.menuItemText}>For Rent</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple

@@ -1,25 +1,16 @@
 import { PropsWithChildren } from "react";
-import {
-  ImageBackground,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ImageBackground, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import RateComp from "../../components/common/Rate";
 import RoomDetailInfo from "../../components/common/Room/RoomDetailInfo";
 import COLORS from "../../consts/colors";
 
-const DetailsScreen = ({
-  navigation,
-  route,
-}: {
-  navigation: any;
-  route: any;
-}) => {
+const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) => {
   const item = route.params;
+
+  const handleRentRoom = () => {
+    console.log("Im here!!!");
+  };
 
   return (
     <ScrollView
@@ -30,22 +21,13 @@ const DetailsScreen = ({
         paddingBottom: 50,
       }}
     >
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="rgba(0,0,0,0)"
-      />
+      <StatusBar barStyle="light-content" translucent backgroundColor="rgba(0,0,0,0)" />
 
       <ScrollView>
         <View style={{ position: "relative" }}>
           <ImageBackground style={style.headerImage} source={item.image}>
             <View style={style.header}>
-              <Icon
-                name="arrow-back-ios"
-                size={28}
-                color={COLORS.white}
-                onPress={navigation.goBack}
-              />
+              <Icon name="arrow-back-ios" size={28} color={COLORS.white} onPress={navigation.goBack} />
               <Icon name="bookmark-border" size={28} color={COLORS.white} />
             </View>
           </ImageBackground>
@@ -116,21 +98,13 @@ const DetailsScreen = ({
         </DetailsScreen.Card>
 
         <DetailsScreen.Card label="Thông tin phòng">
-          <RoomDetailInfo
-            label="Trạng Thái"
-            value="Hết phòng"
-            highlight="unactive"
-          />
+          <RoomDetailInfo label="Trạng Thái" value="Hết phòng" highlight="unactive" />
           <RoomDetailInfo label="GIÁ PHÒNG" value="1,500,000 đồng" />
           <RoomDetailInfo label="DIỆN TÍCH" value="30 mét vuông" />
           <RoomDetailInfo label="SỨC CHỨA" value="8 Nam hoặc Nữ" />
           <RoomDetailInfo label="ĐẶT CỌC" value="1 tháng" />
           <RoomDetailInfo label="ĐIỆN" value="500,000 đồng" />
-          <RoomDetailInfo
-            label="ĐIẠ CHỈ"
-            value="214B Nguyễn Trãi, Phường Nguyễn Cư Trinh, Quận 1, Hồ Chí Minh"
-            width="100%"
-          />
+          <RoomDetailInfo label="ĐIẠ CHỈ" value="214B Nguyễn Trãi, Phường Nguyễn Cư Trinh, Quận 1, Hồ Chí Minh" width="100%" />
         </DetailsScreen.Card>
 
         <DetailsScreen.Card label="Tiện ích">
@@ -143,13 +117,10 @@ const DetailsScreen = ({
 
         <DetailsScreen.Card label="Mô tả thêm">
           <Text>
-            Chính chủ cho thuê phòng dịch vụ đường Hoàng Hoa Thám kv Bình Thạnh.
-            Giá 3,5tr - 5tr Tiện nghi: Có máy giặt, máy lạnh, máy nước nóng
-            lạnh, tủ, bếp từ, giường niệm, bàn ghế làm việc, tủ lạnh, bồn tắm
-            rất sạch sẽ. Phòng có cửa sổ rất thoáng mát. Thuận tiện: gần hàng
-            xanh, trường đại học Hurtech, Hồng Bàng, bv Ung Bướu, gia định..
-            xung quanh có nhiều quán cf, quán ăn, Trung tâm thể dục, công viên,
-            cty.... Đi ra Quận 1, gò Vấp, Phú Nhuận chỉ 5 phút. Hình thật.
+            Chính chủ cho thuê phòng dịch vụ đường Hoàng Hoa Thám kv Bình Thạnh. Giá 3,5tr - 5tr Tiện nghi: Có máy giặt, máy lạnh, máy nước nóng lạnh,
+            tủ, bếp từ, giường niệm, bàn ghế làm việc, tủ lạnh, bồn tắm rất sạch sẽ. Phòng có cửa sổ rất thoáng mát. Thuận tiện: gần hàng xanh, trường
+            đại học Hurtech, Hồng Bàng, bv Ung Bướu, gia định.. xung quanh có nhiều quán cf, quán ăn, Trung tâm thể dục, công viên, cty.... Đi ra Quận
+            1, gò Vấp, Phú Nhuận chỉ 5 phút. Hình thật.
           </Text>
         </DetailsScreen.Card>
       </ScrollView>
@@ -160,7 +131,7 @@ const DetailsScreen = ({
           width: "100%",
         }}
       >
-        <View style={style.btn}>
+        <TouchableOpacity style={style.btn} onPress={handleRentRoom}>
           <Text
             style={{
               color: COLORS.white,
@@ -169,7 +140,7 @@ const DetailsScreen = ({
           >
             Thuê ngay
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -181,17 +152,8 @@ interface IProps extends PropsWithChildren {
 
 DetailsScreen.Card = ({ label, children }: IProps) => {
   return (
-    <View
-      style={{
-        marginHorizontal: 10,
-        paddingLeft: 10,
-        marginTop: 20,
-        borderRadius: 15,
-      }}
-    >
-      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 5 }}>
-        {label}
-      </Text>
+    <View style={style.cardStyle}>
+      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 5 }}>{label}</Text>
 
       <View
         style={{
@@ -274,6 +236,13 @@ const style = StyleSheet.create({
     height: 60,
     backgroundColor: "pink",
     borderRadius: 100,
+  },
+
+  cardStyle: {
+    marginHorizontal: 10,
+    paddingLeft: 10,
+    marginTop: 20,
+    borderRadius: 15,
   },
 });
 

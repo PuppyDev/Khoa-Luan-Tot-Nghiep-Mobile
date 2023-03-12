@@ -6,15 +6,22 @@ import ForgotPass from "./Auth/ForgotPass";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
 import ResetPass from "./Auth/ResetPass";
+import WalletScreen from "./Auth/WalletScreen";
 import BottomScreen from "./BottomScreen";
 import DetailsScreen from "./Home/DetailScreen";
+import RoomRented from "./Room/\bRoomRented";
 import AddRoomScreen from "./Room/AddRoomScreen";
+import RoomForRentScreen from "./Room/RoomForRentScreen";
 const Stack = createStackNavigator<any>();
 
 const RootStack: FunctionComponent = () => {
+  const isAuthentication = true;
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator
+        initialRouteName={isAuthentication ? "BottomScreen" : "Login"}
+      >
         <Stack.Screen
           name="ForgotPass"
           component={ForgotPass}
@@ -42,7 +49,11 @@ const RootStack: FunctionComponent = () => {
           component={BottomScreen}
           options={{ headerShown: false }}
         ></Stack.Screen>
-
+        <Stack.Screen
+          name="WalletScreen"
+          component={WalletScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="AddroomScreen"
           component={AddRoomScreen}
@@ -58,6 +69,16 @@ const RootStack: FunctionComponent = () => {
         <Stack.Screen
           name="ChangePassScreen"
           component={ChangePass}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="RoomForRentScreen"
+          component={RoomForRentScreen}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="RoomRentedScreen"
+          component={RoomRented}
           options={{ headerShown: false }}
         ></Stack.Screen>
       </Stack.Navigator>

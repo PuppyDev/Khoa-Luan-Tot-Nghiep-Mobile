@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import COLORS from "../../../consts/colors";
 import Button from "../Button/Button";
 import MainHeader from "../Header/MainHeader";
 
@@ -181,7 +182,7 @@ export const styles = StyleSheet.create({
   },
 
   buttonLogin: {
-    backgroundColor: "#1A94FF",
+    backgroundColor: COLORS.primary,
     padding: 20,
     borderRadius: 10,
     marginBottom: 30,
