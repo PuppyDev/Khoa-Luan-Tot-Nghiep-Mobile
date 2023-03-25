@@ -6,23 +6,16 @@ import { Dropdown } from "react-native-element-dropdown";
 interface IProps {
   control: any;
   label?: string;
-  data?: any;
+  data?: { label: string; value: string }[];
   name: string;
   search?: boolean;
   value?: string;
   placeholder?: string;
+  onchange?: (value: { label: string; value: string } | null) => void;
 }
 
 const DropdownSelect = (props: IProps) => {
-  const {
-    control,
-    label = "label",
-    data,
-    name,
-    search = false,
-    value = "value",
-    placeholder,
-  } = props;
+  const { control, label = "label", data, name, search = false, value = "value", placeholder, onchange } = props;
   return (
     <Controller
       control={control}
@@ -35,12 +28,13 @@ const DropdownSelect = (props: IProps) => {
           inputSearchStyle={style.inputSearchStyle}
           iconStyle={style.iconStyle}
           search={search}
-          data={data || [{ label: "Hồ Chí Minh", value: "HCM" }]}
+          data={data || [{ label: "Hồ Chí Minh", value: "Hồ Chí Minh" }]}
           value={field.value}
           maxHeight={300}
           labelField={label}
           valueField={value}
           onChange={(item) => {
+            onchange?.(item);
             field.onChange(item.value);
           }}
           placeholder={placeholder}

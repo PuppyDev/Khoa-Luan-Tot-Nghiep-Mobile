@@ -1,22 +1,23 @@
 import React from "react";
 import { View, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
-import {
-  Avatar,
-  Title,
-  Caption,
-  Text,
-  TouchableRipple,
-} from "react-native-paper";
+import { Avatar, Title, Caption, Text, TouchableRipple } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { deleteToken } from "../../api/axiosClient";
+import { useAppSelector } from "../../app/hook";
+import { convertPhone84 } from "../../utils";
 
 const AccountScreen = ({ navigation }: { navigation: any }) => {
+  const { user } = useAppSelector((state) => state.authSlice.userInfo);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.userInfoSection}>
         <View style={{ flexDirection: "row", marginTop: 15 }}>
           <Avatar.Image
             source={{
-              uri: "https://png.pngtree.com/png-clipart/20220429/original/pngtree-dog-with-bell-going-to-sleep-pet-social-media-avatar-png-image_7572709.png",
+              uri:
+                user.avatar ||
+                "https://png.pngtree.com/png-clipart/20220429/original/pngtree-dog-with-bell-going-to-sleep-pet-social-media-avatar-png-image_7572709.png",
             }}
             size={80}
           />
@@ -30,9 +31,9 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
                 },
               ]}
             >
-              Yone Doan
+              {user.name || "Updating..."}
             </Title>
-            <Caption style={styles.caption}>@yone_doan_29</Caption>
+            <Caption style={styles.caption}>@{user.username}</Caption>
           </View>
         </View>
       </View>
@@ -41,23 +42,17 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
         <View style={styles.row}>
           {/* <Icon name="map-marker-radius" color="#777777" size={20}/> */}
           <Ionicons name="locate-outline" size={20} color="#777777" />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>
-            Go Vap, VietNam
-          </Text>
+          <Text style={{ color: "#777777", marginLeft: 20 }}>Ho Chi Minh, VietNam</Text>
         </View>
         <View style={styles.row}>
           {/* <Icon name="phone" color="#777777" size={20}/> */}
           <Ionicons name="call-outline" size={20} color="#777777" />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>
-            +84-911336236
-          </Text>
+          <Text style={{ color: "#777777", marginLeft: 20 }}>{convertPhone84(user?.phone)}</Text>
         </View>
         <View style={styles.row}>
           {/* <Icon name="email" color="#777777" size={20}/> */}
           <Ionicons name="mail-open-outline" size={20} color="#777777" />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>
-            yonedoan@gmail.com
-          </Text>
+          <Text style={{ color: "#777777", marginLeft: 20 }}>yonedoan@gmail.com</Text>
         </View>
       </View>
 
@@ -110,15 +105,17 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
             <Text style={styles.menuItemText}>For Rent</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple
-          onPress={() => navigation.navigate("ChangePassScreen")}
-        >
+        <TouchableRipple onPress={() => navigation.navigate("ChangePassScreen")}>
           <View style={styles.menuItem}>
             <Ionicons name="apps" size={25} color="#777777" />
             <Text style={styles.menuItemText}>Change Password</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple
+          onPress={() => {
+            deleteToken();
+          }}
+        >
           <View style={styles.menuItem}>
             <Ionicons name="log-out-outline" size={25} color="#FF6347" />
             <Text style={styles.menuItemText}>Logout</Text>

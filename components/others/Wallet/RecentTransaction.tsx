@@ -1,62 +1,30 @@
-import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { ITransaction } from "../../../models/user";
 import { randomId } from "../../../utils";
+import { convertVNDtoUSD } from "../../../utils/money";
 
-const listTransations = [
-  {
-    type: "With Draw",
-    // icon: require("../assets/ic_spotify.png"),
-    date: "Jun 12, 12:30",
-    payment: "- $12.3",
-  },
-  {
-    type: "Top Up",
-    // icon: require("../assets/ic_paypal.png"),
-    date: "Jun 12, 12:30",
-    payment: "+ $12",
-  },
-  {
-    type: "Top Up",
-    // icon: require("../assets/ic_dribble.png"),
-    date: "Jun 12, 12:30",
-    payment: "+ $14",
-  },
-];
-
-interface IPropItem {
-  type: string;
-  icon?: any;
-  date: string;
-  payment: string;
-}
-
-const RenderTransactionItem = (item: IPropItem) => (
+const RenderTransactionItem = ({ transaction }: { transaction: ITransaction }) => (
   <View key={randomId()} style={styles.items}>
     <View style={styles.icon}>
       <Icon name="attach-money" size={30} />
     </View>
     <View style={styles.itemBody}>
-      <Text style={styles.type}>{item.type}</Text>
-      <Text style={styles.date}>{item.date}</Text>
+      <Text style={styles.type}>{transaction.action}</Text>
+      <Text style={styles.date}>{transaction.createdAt}</Text>
     </View>
     <View>
-      <Text style={styles.payment}>{item.payment}</Text>
+      <Text style={styles.payment}>{convertVNDtoUSD(transaction.actionAmount)}</Text>
     </View>
   </View>
 );
 
-const RecentTransaction = () => {
+const RecentTransaction = ({ listTransactions }: { listTransactions: ITransaction[] }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Recent Transaction</Text>
       <ScrollView style={styles.list}>
-        {listTransations.map(RenderTransactionItem)}
-        {listTransations.map(RenderTransactionItem)}
-        {listTransations.map(RenderTransactionItem)}
-        {listTransations.map(RenderTransactionItem)}
-        {listTransations.map(RenderTransactionItem)}
-        {listTransations.map(RenderTransactionItem)}
+        <FlatList data={listTransactions} renderItem={({ item }) => <RenderTransactionItem transaction={item} />} keyExtractor={(item) => item._id} />
       </ScrollView>
     </View>
   );
@@ -110,5 +78,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  list: {},
+  list: {
+    marginTop: 10,
+  },
 });

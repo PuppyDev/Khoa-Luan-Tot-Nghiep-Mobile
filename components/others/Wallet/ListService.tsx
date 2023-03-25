@@ -1,8 +1,10 @@
+import { useMutation } from "@tanstack/react-query";
 import React, { Fragment, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Button, Modal, Portal, TextInput } from "react-native-paper";
 import COLORS from "../../../consts/colors";
-import { randomId } from "../../../utils";
+import { userApi } from "../../../api/userApi";
+import { useAppSelector } from "../../../app/hook";
 
 const listService = [
   {
@@ -19,12 +21,28 @@ const renderServiceItem = (item: any) => {
   const [isShowModalTopup, setisShowModalTopup] = useState(false);
   const [moneyTopup, setMoneyTopup] = useState("");
   const isTopup = item.name === "Top Up";
+
+  const { wallet } = useAppSelector((state) => state.authSlice.userInfo.user);
+
+  const mutateTopup = useMutation({
+    mutationFn: userApi.topupMoney,
+    onSuccess: (data: any) => {
+      Linking.canOpenURL(data.paymentUrl).then((supported) => {
+        if (supported) {
+          Linking.openURL(data.paymentUrl);
+        } else {
+          Alert.alert("Error", "Topup error, internal server");
+        }
+      });
+    },
+    onError: (err) => {
+      console.log("🚀 ~ file: ListService.tsx:34 ~ renderServiceItem ~ data:", err);
+    },
+  });
+
   return (
     <Fragment key={item.name}>
-      <TouchableOpacity
-        onPress={() => isTopup && setisShowModalTopup(true)}
-        style={styles.items}
-      >
+      <TouchableOpacity onPress={() => isTopup && setisShowModalTopup(true)} style={styles.items}>
         <View style={styles.icon}>
           <Image source={item.icon} />
         </View>
@@ -33,11 +51,7 @@ const renderServiceItem = (item: any) => {
 
       {isTopup && (
         <Portal>
-          <Modal
-            visible={isShowModalTopup}
-            onDismiss={() => setisShowModalTopup(false)}
-            style={{ padding: 20 }}
-          >
+          <Modal visible={isShowModalTopup} onDismiss={() => setisShowModalTopup(false)} style={{ padding: 20 }}>
             <View
               style={{
                 padding: 20,
@@ -57,12 +71,8 @@ const renderServiceItem = (item: any) => {
                   borderColor: COLORS.primary,
                 }}
               />
-              <TouchableOpacity
-                onPress={() => {
-                  console.log("Vo", moneyTopup);
-                }}
-              >
-                <Button mode="contained" style={{ marginTop: 20 }}>
+              <TouchableOpacity onPress={() => mutateTopup.mutate({ walletAddress: wallet.walletAddress, amount: Number(moneyTopup) })}>
+                <Button mode="contained" style={{ marginTop: 20 }} disabled={mutateTopup.isLoading} loading={mutateTopup.isLoading}>
                   Confirm
                 </Button>
               </TouchableOpacity>

@@ -1,50 +1,52 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
-import {
-  KeyboardAvoidingView,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Alert, Image, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { authApi } from "../../api/authApi";
 import Button from "../../components/common/Button/Button";
 import ButtonText from "../../components/common/Button/ButtonText";
 import COLORS from "../../consts/colors";
 import { signUpSchema } from "../../schemas/auth";
+import { convertPhone84 } from "../../utils";
 
 const initDefaultValues = {
   email: "",
   password: "",
   confirmPass: "",
-  phone: "",
-  name: "",
+  contactInfo: "",
+  username: "",
 };
 
 const Register = ({ navigation }: { navigation: any }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: initDefaultValues,
     resolver: yupResolver(signUpSchema),
   });
 
-  const onSubmit = (data: any) => {
-    console.log("🚀 ~ file: Register.tsx:29 ~ onSubmit ~ data", data);
+  const onSubmit = async (data: any) => {
+    const dataRegister = { ...data, contactInfo: convertPhone84(data.contactInfo) };
+    try {
+      const response = await authApi.register(dataRegister);
+      if (response) {
+        //@ts-ignore
+        Alert.alert("Register !!!", response?.message || "Tạo tài khoản thành công", [{ text: "OK", onPress: () => navigation.navigate("Login") }]);
+      }
+    } catch (error: any) {
+      const { username, email, contactInfo } = error?.data?.message;
+      Alert.alert("Register Error!!!", username || email || contactInfo, [{ text: "OK", onPress: () => console.log("OK Pressed") }]);
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior="padding"
-        style={{ paddingHorizontal: 25 }}
-      >
-        <View style={{ alignItems: "center" }}>
-          <Text>Logo in here</Text>
+      <KeyboardAvoidingView behavior="padding" style={{ paddingHorizontal: 25 }}>
+        <View style={{ alignItems: "center", marginBottom: 10 }}>
+          <Image source={require("../../assets/LogoBugHouse1.png")} />
         </View>
 
         <Text style={styles.headerText}>Đăng ký</Text>
@@ -54,25 +56,19 @@ const Register = ({ navigation }: { navigation: any }) => {
           render={({ field: { onChange, onBlur, value } }) => (
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
-                <Ionicons
-                  name="person-circle-outline"
-                  size={20}
-                  style={styles.iconInput}
-                />
+                <Ionicons name="person-circle-outline" size={20} style={styles.iconInput} />
                 <TextInput
-                  placeholder="Họ và Tên"
+                  placeholder="Tên đăng nhập"
                   style={{ flex: 1, paddingVertical: 0 }}
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
                   value={value}
                 />
               </View>
-              {errors.name && (
-                <Text style={{ color: "red" }}>{errors.name?.message}</Text>
-              )}
+              {errors.username && <Text style={{ color: "red" }}>{errors.username?.message}</Text>}
             </View>
           )}
-          name="name"
+          name="username"
           rules={{ required: false }}
         />
 
@@ -81,11 +77,7 @@ const Register = ({ navigation }: { navigation: any }) => {
           render={({ field: { onChange, onBlur, value } }) => (
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
-                <Ionicons
-                  name="call-outline"
-                  size={20}
-                  style={styles.iconInput}
-                />
+                <Ionicons name="call-outline" size={20} style={styles.iconInput} />
                 <TextInput
                   placeholder="Số điện thoại"
                   style={{ flex: 1, paddingVertical: 0 }}
@@ -94,12 +86,10 @@ const Register = ({ navigation }: { navigation: any }) => {
                   value={value}
                 />
               </View>
-              {errors.phone && (
-                <Text style={{ color: "red" }}>{errors.phone?.message}</Text>
-              )}
+              {errors.contactInfo && <Text style={{ color: "red" }}>{errors.contactInfo?.message}</Text>}
             </View>
           )}
-          name="phone"
+          name="contactInfo"
           rules={{ required: false }}
         />
 
@@ -108,11 +98,7 @@ const Register = ({ navigation }: { navigation: any }) => {
           render={({ field: { onChange, onBlur, value } }) => (
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
-                <MaterialIcons
-                  name="alternate-email"
-                  size={20}
-                  style={styles.iconInput}
-                />
+                <MaterialIcons name="alternate-email" size={20} style={styles.iconInput} />
                 <TextInput
                   placeholder="Email"
                   style={{ flex: 1, paddingVertical: 0 }}
@@ -121,9 +107,7 @@ const Register = ({ navigation }: { navigation: any }) => {
                   value={value}
                 />
               </View>
-              {errors.email && (
-                <Text style={{ color: "red" }}>{errors.email?.message}</Text>
-              )}
+              {errors.email && <Text style={{ color: "red" }}>{errors.email?.message}</Text>}
             </View>
           )}
           name="email"
@@ -135,11 +119,7 @@ const Register = ({ navigation }: { navigation: any }) => {
           render={({ field: { onChange, onBlur, value } }) => (
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
-                <Ionicons
-                  name="lock-closed-outline"
-                  size={20}
-                  style={styles.iconInput}
-                />
+                <Ionicons name="lock-closed-outline" size={20} style={styles.iconInput} />
                 <TextInput
                   placeholder="Mật khẩu"
                   secureTextEntry
@@ -149,9 +129,7 @@ const Register = ({ navigation }: { navigation: any }) => {
                   value={value}
                 />
               </View>
-              {errors.password && (
-                <Text style={{ color: "red" }}>{errors.password?.message}</Text>
-              )}
+              {errors.password && <Text style={{ color: "red" }}>{errors.password?.message}</Text>}
             </View>
           )}
           name="password"
@@ -163,11 +141,7 @@ const Register = ({ navigation }: { navigation: any }) => {
           render={({ field: { onChange, onBlur, value } }) => (
             <View style={{ marginBottom: 20 }}>
               <View style={styles.textFeild}>
-                <Ionicons
-                  name="lock-closed-outline"
-                  size={20}
-                  style={styles.iconInput}
-                />
+                <Ionicons name="lock-closed-outline" size={20} style={styles.iconInput} />
                 <TextInput
                   placeholder="Xác nhận mật khẩu"
                   secureTextEntry
@@ -177,17 +151,13 @@ const Register = ({ navigation }: { navigation: any }) => {
                   value={value}
                 />
               </View>
-              {errors.confirmPass && (
-                <Text style={{ color: "red" }}>
-                  {errors.confirmPass?.message}
-                </Text>
-              )}
+              {errors.confirmPass && <Text style={{ color: "red" }}>{errors.confirmPass?.message}</Text>}
             </View>
           )}
           name="confirmPass"
           rules={{ required: true }}
         />
-        <Button onPress={handleSubmit(onSubmit)} style={styles.buttonLogin}>
+        <Button onPress={handleSubmit(onSubmit)} loading={isSubmitting} style={styles.buttonLogin}>
           Đăng ký ngay
         </Button>
 

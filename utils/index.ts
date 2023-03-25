@@ -4,20 +4,7 @@ export const randomId = () => {
   var S4 = function () {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   };
-  return (
-    S4() +
-    S4() +
-    "-" +
-    S4() +
-    "-" +
-    S4() +
-    "-" +
-    S4() +
-    "-" +
-    S4() +
-    S4() +
-    S4()
-  );
+  return S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4();
 };
 
 export const ArrayFrom = (to: number) => {
@@ -37,9 +24,7 @@ export function formatDate(date: Date): string {
   return date.toLocaleString("en-GB", options);
 }
 
-export const getColor = (
-  type: "error" | "warn" | "success" | "info" | "primary"
-) => {
+export const getColor = (type: "error" | "warn" | "success" | "info" | "primary") => {
   switch (type) {
     case "error":
       return "#FF0032";
@@ -55,3 +40,13 @@ export const getColor = (
       return COLORS.primary;
   }
 };
+
+export function convertPhone84(phoneNumber: string) {
+  phoneNumber = phoneNumber.replace(/\D/g, ""); // Remove all non-numeric characters
+  if (phoneNumber.length === 10) {
+    phoneNumber = "+84" + phoneNumber.substr(1); // Prepend the country code and remove the leading "0"
+  } else if (phoneNumber.length === 11) {
+    phoneNumber = "+84" + phoneNumber.substr(2); // Prepend the country code and remove the leading "0"
+  }
+  return phoneNumber;
+}

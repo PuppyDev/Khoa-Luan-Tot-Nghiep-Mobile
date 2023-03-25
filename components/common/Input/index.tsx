@@ -4,24 +4,26 @@ import { StyleSheet, Text } from "react-native";
 import { TextInput } from "react-native-element-textinput";
 import COLORS from "../../../consts/colors";
 
-const Input = ({
-  control,
-  name,
-  label,
-  placeholder,
-}: {
+interface IProps {
   control: any;
   name: string;
   placeholder: string;
   label?: string;
-}) => {
+  error?: string | null;
+}
+
+const Input = (props: IProps) => {
+  const { control, name, label, placeholder, error } = props;
+
+  const errorStyle = error ? style.error : {};
+
   return (
     <Controller
       control={control}
       render={({ field }) => (
         <>
           <TextInput
-            style={style.inputTextFeild}
+            style={{ ...style.inputTextFeild, ...errorStyle }}
             inputStyle={style.inputStyle}
             labelStyle={style.labelStyle}
             placeholderStyle={style.placeholderStyle}
@@ -29,11 +31,13 @@ const Input = ({
             placeholder={placeholder}
             placeholderTextColor="gray"
             focusColor={COLORS.primary}
+            defaultValue={field.value}
             {...field}
             onChangeText={(text) => {
               field.onChange(text);
             }}
           />
+          {error && <Text style={{ color: "red", fontStyle: "italic" }}>{error}</Text>}
         </>
       )}
       name={name}
@@ -61,6 +65,9 @@ const style = StyleSheet.create({
   },
   placeholderStyle: { fontSize: 16 },
   textErrorStyle: { fontSize: 16 },
+  error: {
+    borderColor: "red",
+  },
 });
 
 export default Input;

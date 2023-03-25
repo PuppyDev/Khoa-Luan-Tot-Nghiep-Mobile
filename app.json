@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "kltn_mobile_final",
-    "slug": "kltn_mobile_final",
+    "name": "bughouse",
+    "displayName": "bughouse",
+    "slug": "bughouse",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

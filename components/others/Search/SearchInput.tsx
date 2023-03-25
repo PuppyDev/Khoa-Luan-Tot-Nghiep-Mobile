@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { TextInput, View, StyleSheet } from "react-native";
-import COLORS from "../../../consts/colors";
+import { useState } from "react";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Modal, Portal } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import SearchDrawer from "./SearchDrawer";
+import COLORS from "../../../consts/colors";
 
 const SearchInput = () => {
   const [search, setSearch] = useState("");
+
+  const [isSearchPopup, setisSearchPopup] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -13,25 +15,18 @@ const SearchInput = () => {
         <View style={styles.search} pointerEvents="none">
           <Ionicons name="search" size={25} />
         </View>
-        <TextInput
-          style={styles.field}
-          placeholder="Search"
-          value={search}
-          onChangeText={setSearch}
-          focusable
-        />
+        <TextInput style={styles.field} placeholder="Search" value={search} onChangeText={setSearch} focusable />
         <View style={styles.filter}>
-          <Ionicons
-            name="filter"
-            size={18}
-            onPress={() => {
-              console.log("Vo filter ne con di");
-            }}
-          />
+          <Ionicons name="filter" size={18} onPress={() => setisSearchPopup(true)} />
         </View>
       </View>
-
-      <SearchDrawer />
+      <Portal>
+        <Modal visible={isSearchPopup} onDismiss={() => setisSearchPopup(false)} contentContainerStyle={{ padding: 20 }}>
+          <View style={{ backgroundColor: "white", padding: 10, borderRadius: 5 }}>
+            <Text>Example Modal. Click outside this area to dismiss.</Text>
+          </View>
+        </Modal>
+      </Portal>
     </View>
   );
 };
