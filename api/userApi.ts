@@ -1,4 +1,5 @@
 import { CommonPagination } from "../models";
+import { IResContract } from "../models/contract";
 import { INotification } from "../models/notification";
 import { IResUserWallet, ITransaction, IUserWallet, IWalletInfo } from "../models/user";
 import axiosClient from "./axiosClient";
@@ -20,5 +21,25 @@ export const userApi = {
 
   getAllNotifications() {
     return axiosClient.get<CommonPagination<INotification[]>>(`${BASES_URL}/notifications`);
+  },
+
+  getAllRequest() {
+    return axiosClient.get(`${BASES_URL}/requests`);
+  },
+
+  doCancelContract(contractId: string) {
+    return axiosClient.post(`${BASES_URL}/contract/${contractId}/cancel-by-renter`, {});
+  },
+
+  getDetailContract(roomId: string) {
+    return axiosClient.get<IResContract>(`${BASES_URL}/contract/${roomId}`);
+  },
+
+  updateRoom(roomId: string) {
+    return axiosClient.put(`${BASES_URL}/${roomId}`);
+  },
+
+  checkNotification(notificationId: string) {
+    return axiosClient.put(`${BASES_URL}/notifications/${notificationId}`);
   },
 };

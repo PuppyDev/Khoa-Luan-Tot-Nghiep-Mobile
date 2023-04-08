@@ -18,6 +18,8 @@ const BottomScreen = () => {
     queryFn: () => userApi.getAllNotifications(),
   });
 
+  const notificationUnCheck = notificationList?.data.items.filter((notification) => !notification.isChecked).length;
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -48,11 +50,7 @@ const BottomScreen = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Search" component={SearchRoom} />
       <Tab.Screen name="Saved" component={SavedScreen} />
-      <Tab.Screen
-        name="notifications"
-        component={NotificationsScreen}
-        options={{ tabBarBadge: notificationList?.data.items.map((item) => !item.isChecked).length || 0 }}
-      />
+      <Tab.Screen name="notifications" component={NotificationsScreen} options={{ tabBarBadge: notificationUnCheck }} />
       <Tab.Screen name="Account" component={AccountScreen} />
     </Tab.Navigator>
   );

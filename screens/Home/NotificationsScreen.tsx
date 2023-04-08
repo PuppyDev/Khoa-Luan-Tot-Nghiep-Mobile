@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { userApi } from "../../api/userApi";
@@ -43,18 +43,34 @@ const NotificationsScreen = () => {
 };
 
 NotificationsScreen.NotificationItem = ({ notificationItem }: { notificationItem: INotification }) => {
-  return (
-    <View style={styles.NotiItem}>
-      <View style={styles.icon}>
-        <Ionicons name="notifications-outline" size={30} color="white" />
-      </View>
+  const queryClient = useQueryClient();
 
-      <View style={{ marginLeft: 10 }}>
-        <Text style={{ ...styles.HeadingNoti, color: getColor("primary") }}>Your room is rented</Text>
-        <Text style={{ paddingVertical: 10 }}>{notificationItem.content}</Text>
-        <Text>Time : {formatDate(new Date(notificationItem.createdAt))}</Text>
+  const checkNotiMutate = useMutation({
+    mutationFn: userApi.checkNotification,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["getAllNotifications"] });
+    },
+    onError: () => {},
+  });
+
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        if (!notificationItem.isChecked && !checkNotiMutate.isLoading) checkNotiMutate.mutate(notificationItem._id);
+      }}
+    >
+      <View style={{ ...styles.NotiItem, backgroundColor: !notificationItem.isChecked ? "#fafafa" : "unset" }}>
+        <View style={styles.icon}>
+          <Ionicons name="notifications-outline" size={30} color="white" />
+        </View>
+
+        <View style={{ marginLeft: 10 }}>
+          <Text style={{ ...styles.HeadingNoti, color: getColor("primary") }}>Rent room</Text>
+          <Text style={{ paddingVertical: 10 }}>{notificationItem.content}</Text>
+          <Text>Time : {formatDate(new Date(notificationItem.createdAt))}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 export default NotificationsScreen;
@@ -63,9 +79,9 @@ const styles = StyleSheet.create({
   NotiItem: {
     display: "flex",
     flexDirection: "row",
-    paddingVertical: 15,
+    paddingBottom: 15,
     paddingHorizontal: 20,
-    marginTop: 10,
+    paddingTop: 25,
   },
   icon: {
     backgroundColor: getColor("primary"),
