@@ -1,4 +1,5 @@
 import { CommonPagination } from "../models";
+import { INotification } from "../models/notification";
 import { IResUserWallet, ITransaction, IUserWallet, IWalletInfo } from "../models/user";
 import axiosClient from "./axiosClient";
 
@@ -15,5 +16,9 @@ export const userApi = {
 
   getWalletTransaction() {
     return axiosClient.get<CommonPagination<ITransaction[]>>(`${BASES_URL}/me/transaction-history`);
+  },
+
+  getAllNotifications() {
+    return axiosClient.get<CommonPagination<INotification[]>>(`${BASES_URL}/notifications`);
   },
 };

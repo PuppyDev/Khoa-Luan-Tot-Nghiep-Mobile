@@ -32,19 +32,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     return (
       <View style={style.categoryListContainer}>
         {categories.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            activeOpacity={0.8}
-            onPress={() => setSelectedCategoryIndex(index)}
-          >
+          <TouchableOpacity key={index} activeOpacity={0.8} onPress={() => setSelectedCategoryIndex(index)}>
             <View>
               <Text
                 style={{
                   ...style.categoryListText,
-                  color:
-                    selectedCategoryIndex == index
-                      ? COLORS.primary
-                      : COLORS.grey,
+                  color: selectedCategoryIndex == index ? COLORS.primary : COLORS.grey,
                 }}
               >
                 {item}
@@ -67,11 +60,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   };
 
   const Card = ({ hotel, index }: { hotel: any; index: number }) => {
-    const inputRange = [
-      (index - 1) * cardWidth,
-      index * cardWidth,
-      (index + 1) * cardWidth,
-    ];
+    const inputRange = [(index - 1) * cardWidth, index * cardWidth, (index + 1) * cardWidth];
     const opacity = scrollX.interpolate({
       inputRange,
       outputRange: [0.7, 0, 0.7],
@@ -82,32 +71,18 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     });
 
     return (
-      <TouchableOpacity
-        disabled={activeCardIndex != index}
-        activeOpacity={1}
-        onPress={() => navigation.navigate("DetailScreen", hotel)}
-      >
+      <TouchableOpacity disabled={activeCardIndex != index} activeOpacity={1} onPress={() => navigation.navigate("DetailScreen", hotel)}>
         <Animated.View style={{ ...style.card, transform: [{ scale }] }}>
           <Animated.View style={{ ...style.cardOverLay, opacity }} />
           <View style={style.priceTag}>
-            <Text
-              style={{ color: COLORS.white, fontSize: 20, fontWeight: "bold" }}
-            >
-              ${hotel.price}
-            </Text>
+            <Text style={{ color: COLORS.white, fontSize: 20, fontWeight: "bold" }}>${hotel.price}</Text>
           </View>
           <Image source={hotel.image} style={style.cardImage} />
           <View style={style.cardDetails}>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <View>
-                <Text style={{ fontWeight: "bold", fontSize: 17 }}>
-                  {hotel.name}
-                </Text>
-                <Text style={{ color: COLORS.grey, fontSize: 12 }}>
-                  {hotel.location}
-                </Text>
+                <Text style={{ fontWeight: "bold", fontSize: 17 }}>{hotel.name}</Text>
+                <Text style={{ color: COLORS.grey, fontSize: 12 }}>{hotel.location}</Text>
               </View>
               <Icon name="bookmark-border" size={26} color={COLORS.primary} />
             </View>
@@ -139,18 +114,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           }}
         >
           <Icon name="star" size={15} color={COLORS.orange} />
-          <Text
-            style={{ color: COLORS.white, fontWeight: "bold", fontSize: 15 }}
-          >
-            5.0
-          </Text>
+          <Text style={{ color: COLORS.white, fontWeight: "bold", fontSize: 15 }}>5.0</Text>
         </View>
         <Image style={style.topHotelCardImage} source={hotel.image} />
         <View style={{ paddingVertical: 5, paddingHorizontal: 10 }}>
           <Text style={{ fontSize: 10, fontWeight: "bold" }}>{hotel.name}</Text>
-          <Text style={{ fontSize: 7, fontWeight: "bold", color: COLORS.grey }}>
-            {hotel.location}
-          </Text>
+          <Text style={{ fontSize: 7, fontWeight: "bold", color: COLORS.grey }}>{hotel.location}</Text>
         </View>
       </View>
     );
@@ -158,18 +127,11 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="rgba(0,0,0,0)"
-      />
+      <StatusBar barStyle="light-content" translucent backgroundColor="rgba(0,0,0,0)" />
       <View style={style.header}>
         <View style={{ paddingBottom: 15 }}>
-          <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-            Tìm phòng trọ của bạn
-          </Text>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Find your room in</Text>
           <View style={{ flexDirection: "row" }}>
-            <Text style={{ fontSize: 30, fontWeight: "bold" }}>ở </Text>
             <Text
               style={{
                 fontSize: 30,
@@ -177,11 +139,10 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
                 color: COLORS.primary,
               }}
             >
-              Hồ Chí Minh
+              Ho Chi Minh City
             </Text>
           </View>
         </View>
-        <Icon name="person-outline" size={38} color={COLORS.grey} />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -204,14 +165,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         <View>
           <Animated.FlatList
             onMomentumScrollEnd={(e) => {
-              setActiveCardIndex(
-                Math.round(e.nativeEvent.contentOffset.x / cardWidth)
-              );
+              setActiveCardIndex(Math.round(e.nativeEvent.contentOffset.x / cardWidth));
             }}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-              { useNativeDriver: true }
-            )}
+            onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], { useNativeDriver: true })}
             horizontal
             data={hotels}
             contentContainerStyle={{
@@ -220,9 +176,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
               paddingRight: cardWidth / 2 - 40,
             }}
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) => (
-              <Card hotel={item} index={index} />
-            )}
+            renderItem={({ item, index }) => <Card hotel={item} index={index} />}
             snapToInterval={cardWidth}
           />
         </View>
@@ -234,9 +188,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
             marginHorizontal: 20,
           }}
         >
-          <Text style={{ fontWeight: "bold", color: COLORS.grey }}>
-            Phòng mới nhất
-          </Text>
+          <Text style={{ fontWeight: "bold", color: COLORS.grey }}>Phòng mới nhất</Text>
           <Text style={{ color: COLORS.grey }}>Xem tất cả</Text>
         </View>
 

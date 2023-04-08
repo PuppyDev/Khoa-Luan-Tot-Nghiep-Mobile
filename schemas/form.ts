@@ -4,8 +4,7 @@ export const schemaFormCreateRoom = yup
   .object({
     name: yup.string().required("Please enter room name"),
     acreage: yup.number().min(1).max(200).required("Please enter acreage"),
-    basePrice: yup.number().min(300000).max(1000000000).required("Please enter room price"),
-    deposit: yup.number().lessThan(yup.ref("basePrice"), "Please enter deposit less than room price").required("Please enter deposit"),
+    basePrice: yup.number().min(10000).max(1000000000).required("Please enter room price"),
     roomElectric: yup.number().required("Please enter room electric / month or kw"),
     totalNbPeople: yup
       .number()

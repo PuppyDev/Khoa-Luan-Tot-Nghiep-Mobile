@@ -1,5 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useQuery } from "@tanstack/react-query";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { userApi } from "../api/userApi";
 import COLORS from "../consts/colors";
 import AccountScreen from "./Auth/AccountScreen";
 import SettingScreen from "./Auth/Setting";
@@ -11,6 +13,11 @@ import SearchRoom from "./Room/SearchRoom";
 const Tab = createBottomTabNavigator();
 
 const BottomScreen = () => {
+  const { data: notificationList, isLoading } = useQuery({
+    queryKey: ["getAllNotifications"],
+    queryFn: () => userApi.getAllNotifications(),
+  });
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -44,7 +51,7 @@ const BottomScreen = () => {
       <Tab.Screen
         name="notifications"
         component={NotificationsScreen}
-        options={{ tabBarBadge: 3 }}
+        options={{ tabBarBadge: notificationList?.data.items.map((item) => !item.isChecked).length || 0 }}
       />
       <Tab.Screen name="Account" component={AccountScreen} />
     </Tab.Navigator>

@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { RadioButton } from "react-native-radio-buttons-group";
@@ -15,6 +15,7 @@ import DropdownSelect from "../../components/common/Dropdown";
 import MainHeader from "../../components/common/Header/MainHeader";
 import COLORS from "../../consts/colors";
 import { typeGender, typeOfRoom, utilities } from "../../consts/room";
+import { room } from "../../models/room";
 import { schemaFormCreateRoom } from "../../schemas/form";
 import { randomId } from "../../utils";
 
@@ -96,13 +97,14 @@ const defaultValues = {
   addressDetail: "",
 };
 
-const AddRoomScreen = () => {
+const AddRoomScreen = ({ route }: { route: any }) => {
+  const item: room = route.params;
   const [currentPosition, setcurrentPosition] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isSubmitting },
     getValues,
     setValue,
     reset,
@@ -110,6 +112,28 @@ const AddRoomScreen = () => {
     defaultValues,
     resolver: yupResolver(schemaFormCreateRoom),
   });
+
+  useEffect(() => {
+    if (item) {
+      const { address, services } = item;
+      console.log("Vo ne");
+      reset({
+        ...item,
+        streetName: address.street,
+        wardName: address.ward,
+        ditrictName: address.district,
+        addressDetail: address.addressDetail,
+
+        roomElectric: services[1]?.basePrice,
+        waterPrice: services[2]?.basePrice,
+        internetCost: services[0]?.basePrice,
+        nbCurrentPeople: item.nbCurrentPeople,
+      } as unknown as FormValues);
+      setDistrictName(item.address.district);
+    }
+  }, [item]);
+
+  console.log("values", getValues());
 
   const onSubmit = async (values: any) => {
     setIsLoading(true);
@@ -203,7 +227,7 @@ const AddRoomScreen = () => {
 
   return (
     <SafeAreaView>
-      <MainHeader title="Add New Room" />
+      <MainHeader title={false ? "Edit Your Room" : "Add New Room"} />
       <View
         style={{
           marginTop: 20,

@@ -23,9 +23,12 @@ const RecentTransaction = ({ listTransactions }: { listTransactions: ITransactio
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Recent Transaction</Text>
-      <ScrollView style={styles.list}>
-        <FlatList data={listTransactions} renderItem={({ item }) => <RenderTransactionItem transaction={item} />} keyExtractor={(item) => item._id} />
-      </ScrollView>
+      <FlatList
+        style={styles.list}
+        data={listTransactions}
+        renderItem={({ item }) => <RenderTransactionItem transaction={item} />}
+        keyExtractor={(item) => item._id}
+      />
     </View>
   );
 };

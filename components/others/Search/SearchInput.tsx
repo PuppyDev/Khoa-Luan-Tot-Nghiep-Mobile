@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { Modal, Portal } from "react-native-paper";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { StyleSheet, Text, View } from "react-native";
+import { Modal, Portal, Searchbar } from "react-native-paper";
 import COLORS from "../../../consts/colors";
 
 const SearchInput = () => {
@@ -11,15 +10,27 @@ const SearchInput = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.inner}>
+      {/* <View style={styles.inner}>
         <View style={styles.search} pointerEvents="none">
           <Ionicons name="search" size={25} />
         </View>
         <TextInput style={styles.field} placeholder="Search" value={search} onChangeText={setSearch} focusable />
+
         <View style={styles.filter}>
           <Ionicons name="filter" size={18} onPress={() => setisSearchPopup(true)} />
         </View>
-      </View>
+      </View> */}
+      <Searchbar
+        placeholder="Search"
+        onChangeText={(data) => {
+          console.log(data);
+          setSearch(data);
+        }}
+        value={search}
+        style={{
+          backgroundColor: "white",
+        }}
+      />
       <Portal>
         <Modal visible={isSearchPopup} onDismiss={() => setisSearchPopup(false)} contentContainerStyle={{ padding: 20 }}>
           <View style={{ backgroundColor: "white", padding: 10, borderRadius: 5 }}>

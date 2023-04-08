@@ -6,7 +6,6 @@ import Card from "../../common/Card/Card";
 import CardContent from "../../common/Card/CardContent";
 import CardFavoriteIcon from "../../common/Card/CardFavoriteIcon";
 import CardMedia from "../../common/Card/CardMedia";
-import { SharedElement } from "react-navigation-shared-element";
 
 const SearchCard = ({ item, index }: { item: any; index: number }) => {
   console.log("🚀 ~ file: SearchCard.tsx:10 ~ SearchCard ~ item:", item);

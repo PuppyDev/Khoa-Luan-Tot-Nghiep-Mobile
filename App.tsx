@@ -5,7 +5,8 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import COLORS from "./consts/colors";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+// your entry point
+import { MenuProvider } from "react-native-popup-menu";
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -20,11 +21,13 @@ const queryClient = new QueryClient();
 export default function App() {
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <PaperProvider theme={theme}>
-          <RootStack />
-        </PaperProvider>
-      </QueryClientProvider>
+      <MenuProvider>
+        <QueryClientProvider client={queryClient}>
+          <PaperProvider theme={theme}>
+            <RootStack />
+          </PaperProvider>
+        </QueryClientProvider>
+      </MenuProvider>
     </Provider>
   );
 }

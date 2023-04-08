@@ -23,7 +23,7 @@ const Login = ({ navigation }: { navigation: any }) => {
       username: "",
       password: "",
     },
-    resolver: yupResolver(loginSchema),
+    // resolver: yupResolver(loginSchema),
   });
 
   const dispatch = useAppDispatch();

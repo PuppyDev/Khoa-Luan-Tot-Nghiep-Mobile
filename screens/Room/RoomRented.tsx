@@ -8,11 +8,7 @@ import COLORS from "../../consts/colors";
 import SavedScreen from "../Home/SavedScreen";
 
 const RoomRented = () => {
-  const {
-    data: listForRent,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: listForRent, isLoading } = useQuery({
     queryKey: ["getRoomRented"],
     queryFn: () => roomApi.getRoomrented(),
     refetchOnWindowFocus: false,
@@ -23,7 +19,7 @@ const RoomRented = () => {
       <MainHeader title="Room rented" />
 
       {isLoading && (
-        <View style={{ height: "100%", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <View style={styles.styledLoadingWrap}>
           <ActivityIndicator animating={true} color={COLORS.primary} size="large" />
         </View>
       )}
@@ -32,12 +28,11 @@ const RoomRented = () => {
           style={{ paddingHorizontal: 20, marginBottom: 120 }}
           data={listForRent?.data.items}
           renderItem={({ item }) => <SavedScreen.RoomCard roomData={item.room} />}
-          keyExtractor={(item) => item._id}
         />
       )}
 
       {!isLoading && listForRent?.data && listForRent.data.items.length === 0 && (
-        <View style={{ height: "100%", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <View style={styles.styledLoadingWrap}>
           <Text>No data not found.</Text>
         </View>
       )}
@@ -47,4 +42,12 @@ const RoomRented = () => {
 
 export default RoomRented;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  styledLoadingWrap: {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

@@ -23,7 +23,6 @@ const SearchRoom = () => {
   } = useQuery({
     queryKey: ["getAllNewRoom", searchFilter],
     queryFn: () => roomApi.getAllRoom(searchFilter),
-    staleTime: 60 * 1000,
   });
 
   return (

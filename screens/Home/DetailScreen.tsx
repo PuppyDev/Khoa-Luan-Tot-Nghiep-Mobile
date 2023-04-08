@@ -1,30 +1,30 @@
-import { PropsWithChildren, useState } from "react";
-import { Image, ImageBackground, Linking, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
-import { Modal, Portal } from "react-native-paper";
-import RenderHtml from "react-native-render-html";
+import { PropsWithChildren } from "react";
+import { Image, ImageBackground, Linking, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { useAppSelector } from "../../app/hook";
 import RateComp from "../../components/common/Rate";
 import RoomDetailInfo from "../../components/common/Room/RoomDetailInfo";
 import COLORS from "../../consts/colors";
 import { room } from "../../models/room";
 import { convertPhone84, randomId } from "../../utils";
-import { getContract } from "../../utils/contract";
+import { convertVNDtoUSD } from "../../utils/money";
 
 const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) => {
   const item: room = route.params;
 
-  const [isShowContract, setIsShowContract] = useState(false);
-  const [isSignContract, setIsSignContract] = useState(false);
+  const { user } = useAppSelector((state) => state.authSlice.userInfo);
 
   const handleRedirectToCall = () => {
     Linking.openURL(`tel:${"0911336236"}`);
   };
 
   const handleRentRoom = () => {
-    if (!isSignContract) setIsShowContract(true);
-    else {
-      console.log("here im here");
-    }
+    navigation.navigate("ContractScreen", { item: item });
+  };
+
+  const handleEditRoom = () => {
+    // will pass data here to edit room
+    navigation.navigate("AddroomScreen", item);
   };
 
   return (
@@ -66,7 +66,7 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
               marginTop: 5,
             }}
           >
-            {item?.address.address_detail}
+            {item?.address.addressDetail}
           </Text>
           <View
             style={{
@@ -95,12 +95,12 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
                 marginLeft: 5,
               }}
             >
-              ${item?.basePrice}
+              {convertVNDtoUSD(item?.basePrice)}
             </Text>
           </View>
         </View>
 
-        <DetailsScreen.Card label="Thông tin chủ phòng ">
+        <DetailsScreen.Card label="Owner Infomation">
           <View
             style={{
               marginTop: 5,
@@ -118,33 +118,38 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
             </View>
 
             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-              <Text style={{ fontSize: 16 }}>{item?.owner?.name || "Updating..."}</Text>
+              <Text style={{ fontSize: 16 }}>{item?.owner?.name || item?.owner?.username || "Updating..."}</Text>
               <TouchableOpacity onPress={handleRedirectToCall}>
-                <Text style={{ fontSize: 16 }}>{convertPhone84(item?.owner.phone) || "Updating..."}</Text>
+                <Text style={{ fontSize: 16 }}>{convertPhone84(item?.owner?.phone || "0911336236") || "Updating..."}</Text>
               </TouchableOpacity>
             </View>
           </View>
         </DetailsScreen.Card>
 
-        <DetailsScreen.Card label="Thông tin phòng">
-          <RoomDetailInfo label="Trạng Thái" value="Hết phòng" highlight="unactive" />
-          <RoomDetailInfo label="GIÁ PHÒNG" value={item?.basePrice.toLocaleString() + " đồng"} />
-          <RoomDetailInfo label="DIỆN TÍCH" value={item?.acreage + " m2"} />
-          <RoomDetailInfo label="SỨC CHỨA" value="8 Nam hoặc Nữ" />
-          <RoomDetailInfo label="ĐẶT CỌC" value={item?.deposit.toLocaleString() + " đồng"} />
-          <RoomDetailInfo label="ĐIỆN" value="500,000 đồng" />
-          <RoomDetailInfo label="ĐIẠ CHỈ" value="214B Nguyễn Trãi, Phường Nguyễn Cư Trinh, Quận 1, Hồ Chí Minh" width="100%" />
+        <DetailsScreen.Card label="Room Infomation">
+          <RoomDetailInfo
+            label="ROOM STATUS"
+            value={item?.status === "already-rent" ? "Đã Thuê" : "Còn phòng"}
+            highlight={item?.status === "already-rent" ? "unactive" : "active"}
+          />
+          <RoomDetailInfo label="ROOM RATES" value={convertVNDtoUSD(item?.basePrice)} />
+          <RoomDetailInfo label="ACREAGE" value={item?.acreage + " m2"} />
+          <RoomDetailInfo label="CAPACITY" value={item?.gender === "All" ? "Male / Female" : item.gender} />
+          <RoomDetailInfo label="DEPOSIT" value={convertVNDtoUSD(item?.deposit)} />
+          <RoomDetailInfo label="ELECTRICITY" value={convertVNDtoUSD(3500)} />
+          <RoomDetailInfo label="ADDRESS" value={item.address.fullText} width="100%" />
         </DetailsScreen.Card>
 
-        <DetailsScreen.Card label="Tiện ích">
-          <RoomDetailInfo label="GIÁ PHÒNG" value="1,500,000 đồng" />
-          <RoomDetailInfo label="DIỆN TÍCH" value="30 mét vuông" />
-          <RoomDetailInfo label="SỨC CHỨA" value="8 Nam hoặc Nữ" />
-          <RoomDetailInfo label="ĐẶT CỌC" value="1 tháng" />
-          <RoomDetailInfo label="ĐIỆN" value="500,000 đồng" />
+        <DetailsScreen.Card label="Amentilities">
+          <RoomDetailInfo label="ROOM STATUS" value={item?.status === "already-rent" ? "Đã Thuê" : "Còn phòng"} highlight="unactive" />
+          <RoomDetailInfo label="ROOM RATES" value={convertVNDtoUSD(item?.basePrice)} />
+          <RoomDetailInfo label="ACREAGE" value={item?.acreage + " m2"} />
+          <RoomDetailInfo label="CAPACITY" value={item?.gender === "All" ? "Male/Female" : item.gender} />
+          <RoomDetailInfo label="DEPOSIT" value={convertVNDtoUSD(item?.deposit)} />
+          <RoomDetailInfo label="ELECTRICITY" value={convertVNDtoUSD(3500)} />
         </DetailsScreen.Card>
 
-        <DetailsScreen.Card label="Mô tả thêm">
+        <DetailsScreen.Card label="Description">
           <Text>{item.description}</Text>
         </DetailsScreen.Card>
 
@@ -157,25 +162,30 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
           width: "100%",
         }}
       >
-        <TouchableOpacity style={style.btn} onPress={handleRentRoom}>
-          <Text
-            style={{
-              color: COLORS.white,
-              fontSize: 18,
-            }}
-          >
-            Thuê ngay
-          </Text>
-        </TouchableOpacity>
+        {item?.owner?.username !== user.username ? (
+          <TouchableOpacity style={style.btn} onPress={handleRentRoom}>
+            <Text
+              style={{
+                color: COLORS.white,
+                fontSize: 18,
+              }}
+            >
+              Rent now
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={style.btn} onPress={handleEditRoom}>
+            <Text
+              style={{
+                color: COLORS.white,
+                fontSize: 18,
+              }}
+            >
+              Edit your room
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
-      <DetailsScreen.Contract
-        onSign={() => {
-          setIsSignContract(true);
-          handleRentRoom();
-        }}
-        isShowContract={isShowContract}
-        onHideModal={() => setIsShowContract(false)}
-      />
     </ScrollView>
   );
 };
@@ -199,49 +209,6 @@ DetailsScreen.Card = ({ label, children }: IProps) => {
         {children}
       </View>
     </View>
-  );
-};
-
-const source = {
-  html: getContract({}),
-};
-
-DetailsScreen.Contract = ({ isShowContract, onHideModal, onSign }: { isShowContract: boolean; onHideModal?: () => void; onSign: () => void }) => {
-  const { width } = useWindowDimensions();
-
-  return (
-    <Portal>
-      <Modal visible={isShowContract} onDismiss={onHideModal} contentContainerStyle={{ backgroundColor: "white", padding: 10 }}>
-        <ScrollView>
-          <RenderHtml contentWidth={width} source={source} />
-          <View style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexDirection: "row" }}>
-            <View style={style.cardViewSign}>
-              <Text style={{ ...style.headingText, borderRightColor: "transparent" }}>Ben Cho thue</Text>
-            </View>
-
-            <View style={style.cardViewSign}>
-              <Text style={style.headingText}>Ben thue</Text>
-            </View>
-          </View>
-          <View style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexDirection: "row" }}>
-            <View style={style.cardViewSign}>
-              <View style={style.CardSign}>
-                <Text>Bao</Text>
-                <Text style={{ fontSize: 15, marginTop: 5, color: COLORS.primary }}>Doan Ngoc Quoc Bao</Text>
-              </View>
-            </View>
-
-            <View style={style.cardViewSign}>
-              <View style={style.CardSign}>
-                <TouchableOpacity onPress={onSign}>
-                  <Text>Click to Sign Contract </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </ScrollView>
-      </Modal>
-    </Portal>
   );
 };
 

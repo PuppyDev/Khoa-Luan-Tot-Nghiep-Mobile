@@ -1,16 +1,15 @@
-import { FlatList, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { FlatList, Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
 import { doRemoveFavorite, doSetFavorite } from "../../app/roomSlice";
 import MainHeader from "../../components/common/Header/MainHeader";
 import COLORS from "../../consts/colors";
 import { room } from "../../models/room";
-import { useNavigation } from "@react-navigation/native";
-import { changeMoney } from "../../utils/money";
+import { convertVNDtoUSD } from "../../utils/money";
 
 const SavedScreen = () => {
   const { listFavorite } = useAppSelector((state) => state.roomSlice);
-  console.log("🚀 ~ file: SavedScreen.tsx:11 ~ SavedScreen ~ listFavorite:", listFavorite);
 
   return (
     <SafeAreaView>
@@ -96,9 +95,9 @@ SavedScreen.RoomCard = ({ roomData, isFavoritePage = false }: { roomData?: room 
 
       <Text style={{ fontSize: 16, fontWeight: "bold", paddingVertical: 10 }}>{roomData?.name || "upading..."}</Text>
 
-      <Text style={{ color: COLORS.primary, fontWeight: "500", fontSize: 14 }}>{changeMoney(roomData.basePrice)}/ person</Text>
+      <Text style={{ color: COLORS.primary, fontWeight: "500", fontSize: 14 }}>{convertVNDtoUSD(roomData.basePrice)} / person</Text>
 
-      <Text style={{ paddingVertical: 10, color: "gray" }}>{roomData?.address.address_detail}</Text>
+      <Text style={{ paddingVertical: 10, color: "gray" }}>{roomData?.address.addressDetail}</Text>
     </TouchableOpacity>
   );
 };

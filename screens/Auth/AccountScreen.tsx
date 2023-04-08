@@ -1,13 +1,40 @@
-import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
 import { View, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
 import { Avatar, Title, Caption, Text, TouchableRipple } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { deleteToken } from "../../api/axiosClient";
+import { roomApi } from "../../api/roomApi";
+import { userApi } from "../../api/userApi";
 import { useAppSelector } from "../../app/hook";
+import { IWalletInfo } from "../../models/user";
 import { convertPhone84 } from "../../utils";
+import { convertVNDtoUSD } from "../../utils/money";
 
 const AccountScreen = ({ navigation }: { navigation: any }) => {
   const { user } = useAppSelector((state) => state.authSlice.userInfo);
+
+  const [walletInfo, setWalletInfo] = useState<IWalletInfo>();
+
+  const getBalance = async () => {
+    try {
+      const response = await userApi.getWalletInfo();
+      console.log("🚀 ~ file: WalletScreen.tsx:18 ~ getBalance ~ response:", response);
+      setWalletInfo(response.data);
+    } catch (error) {
+      console.log("🚀 ~ file: WalletScreen.tsx:16 ~ getBalance ~ error:", error);
+    }
+  };
+
+  useEffect(() => {
+    getBalance();
+  }, []);
+
+  const { data: listForRent, isLoading } = useQuery({
+    queryKey: ["getRoomRented"],
+    queryFn: () => roomApi.getRoomrented(),
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -67,7 +94,7 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
             },
           ]}
         >
-          <Title>$140.50</Title>
+          <Title>{convertVNDtoUSD((walletInfo?.balance as number) || 0)}</Title>
           <Caption>Wallet Bughouse</Caption>
         </TouchableOpacity>
         <TouchableOpacity
@@ -80,7 +107,7 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
             },
           ]}
         >
-          <Title>2</Title>
+          <Title>{listForRent?.data.items.length || 0}</Title>
           <Caption>Rooms rented</Caption>
         </TouchableOpacity>
       </View>

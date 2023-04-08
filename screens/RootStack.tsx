@@ -15,6 +15,8 @@ import BottomScreen from "./BottomScreen";
 import DetailsScreen from "./Home/DetailScreen";
 import RoomRented from "./Room/\bRoomRented";
 import AddRoomScreen from "./Room/AddRoomScreen";
+import ContractScreen from "./Room/ContractScreen";
+import RoomDeclaration from "./Room/RoomDeclaration";
 import RoomForRentScreen from "./Room/RoomForRentScreen";
 const Stack = createStackNavigator<any>();
 
@@ -49,23 +51,23 @@ const RootStack: FunctionComponent = () => {
         {!isAuthenticated && (
           <>
             <Stack.Screen name="ForgotPass" component={ForgotPass} options={{ headerShown: false }} />
-            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
-            <Stack.Screen name="ResetPass" component={ResetPass} options={{ headerShown: false }}></Stack.Screen>
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+            <Stack.Screen name="ResetPass" component={ResetPass} options={{ headerShown: false }} />
           </>
         )}
 
         {isAuthenticated && (
           <>
-            <Stack.Screen name="BottomScreen" component={BottomScreen} options={{ headerShown: false }}></Stack.Screen>
+            <Stack.Screen name="BottomScreen" component={BottomScreen} options={{ headerShown: false }} />
             <Stack.Screen name="WalletScreen" component={WalletScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="AddroomScreen" component={AddRoomScreen} options={{ headerShown: false }}></Stack.Screen>
-
-            <Stack.Screen name="DetailScreen" component={DetailsScreen} options={{ headerShown: false }}></Stack.Screen>
-
-            <Stack.Screen name="ChangePassScreen" component={ChangePass} options={{ headerShown: false }}></Stack.Screen>
-            <Stack.Screen name="RoomForRentScreen" component={RoomForRentScreen} options={{ headerShown: false }}></Stack.Screen>
-            <Stack.Screen name="RoomRentedScreen" component={RoomRented} options={{ headerShown: false }}></Stack.Screen>
+            <Stack.Screen name="AddroomScreen" component={AddRoomScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="DetailScreen" component={DetailsScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="ChangePassScreen" component={ChangePass} options={{ headerShown: false }} />
+            <Stack.Screen name="RoomForRentScreen" component={RoomForRentScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="RoomRentedScreen" component={RoomRented} options={{ headerShown: false }} />
+            <Stack.Screen name="ContractScreen" component={ContractScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="RoomDeclaration" component={RoomDeclaration} options={{ headerShown: false }} />
           </>
         )}
       </Stack.Navigator>

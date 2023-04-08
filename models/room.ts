@@ -1,4 +1,4 @@
-import { IOwnerInfo } from "./user";
+import { IOwnerInfo, IUser } from "./user";
 
 export interface RoomFilters {
   price: {
@@ -49,7 +49,7 @@ export interface room {
   roomAttachment: {
     url: string[];
   };
-  services: string[];
+  services: IServiceType[];
   owner: {
     _id: string;
     username: string;
@@ -62,16 +62,17 @@ export interface room {
   createdAt: string;
   updatedAt: string;
   address: AddressType;
+  period: number;
+  status?: string;
 }
 
 export type AddressType = {
-  code_city: string;
-  code_dictrict: string;
-  code_ward: string;
-  code_street: string;
-  Lat_ggmap: number;
-  Lng_ggmap: number;
-  address_detail: string;
+  addressDetail: string;
+  city: string;
+  district: string;
+  fullText: string;
+  street: string;
+  ward: string;
 };
 
 export interface IRoomParams {
@@ -109,7 +110,9 @@ export interface IpropsRoomMaster {
 }
 
 export interface IResponseRented {
-  dateRent: string;
-  room: room;
-  _id: string;
+  dateRent: string | undefined;
+  room: room | undefined;
+  _id: string | undefined;
+  lessor: IUser | undefined;
+  renter: IUser | undefined;
 }
