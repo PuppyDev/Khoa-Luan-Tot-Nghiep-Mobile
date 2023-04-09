@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 import { Image, ImageBackground, Linking, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useAppSelector } from "../../app/hook";
 import RateComp from "../../components/common/Rate";
@@ -162,19 +163,8 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
           width: "100%",
         }}
       >
-        {item?.owner?.username !== user.username ? (
-          <TouchableOpacity style={style.btn} onPress={handleRentRoom}>
-            <Text
-              style={{
-                color: COLORS.white,
-                fontSize: 18,
-              }}
-            >
-              Rent now
-            </Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={style.btn} onPress={handleEditRoom}>
+        {item?.owner?.username === user.username && item.status !== "already-rent" && (
+          <Button mode="contained" style={style.btn} onPress={handleEditRoom}>
             <Text
               style={{
                 color: COLORS.white,
@@ -183,7 +173,20 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
             >
               Edit your room
             </Text>
-          </TouchableOpacity>
+          </Button>
+        )}
+
+        {item && item.owner?.username !== user.username && item.status !== "already-rent" && (
+          <Button mode="contained" style={style.btn} onPress={handleRentRoom}>
+            <Text
+              style={{
+                color: COLORS.white,
+                fontSize: 18,
+              }}
+            >
+              Rent now
+            </Text>
+          </Button>
         )}
       </View>
     </ScrollView>

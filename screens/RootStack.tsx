@@ -13,6 +13,7 @@ import ResetPass from "./Auth/ResetPass";
 import WalletScreen from "./Auth/WalletScreen";
 import BottomScreen from "./BottomScreen";
 import DetailsScreen from "./Home/DetailScreen";
+import InvoiceScreen from "./Home/InvoiceScreen";
 import RoomRented from "./Room/\bRoomRented";
 import AddRoomScreen from "./Room/AddRoomScreen";
 import ContractScreen from "./Room/ContractScreen";
@@ -68,6 +69,7 @@ const RootStack: FunctionComponent = () => {
             <Stack.Screen name="RoomRentedScreen" component={RoomRented} options={{ headerShown: false }} />
             <Stack.Screen name="ContractScreen" component={ContractScreen} options={{ headerShown: false }} />
             <Stack.Screen name="RoomDeclaration" component={RoomDeclaration} options={{ headerShown: false }} />
+            <Stack.Screen name="InvoiceScreen" component={InvoiceScreen} options={{ headerShown: false }} />
           </>
         )}
       </Stack.Navigator>

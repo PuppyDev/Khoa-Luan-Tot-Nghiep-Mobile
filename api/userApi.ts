@@ -1,5 +1,6 @@
 import { CommonPagination } from "../models";
 import { IResContract } from "../models/contract";
+import { IInvoiceItem } from "../models/Invoice";
 import { INotification } from "../models/notification";
 import { IResUserWallet, ITransaction, IUserWallet, IWalletInfo } from "../models/user";
 import axiosClient from "./axiosClient";
@@ -41,5 +42,13 @@ export const userApi = {
 
   checkNotification(notificationId: string) {
     return axiosClient.put(`${BASES_URL}/notifications/${notificationId}`);
+  },
+
+  doAcceptCancelRent() {
+    return axiosClient.post(`${BASES_URL}/contract/accept`);
+  },
+
+  getInvoices() {
+    return axiosClient.get<CommonPagination<IInvoiceItem[]>>(`${BASES_URL}/invoices/rented`);
   },
 };

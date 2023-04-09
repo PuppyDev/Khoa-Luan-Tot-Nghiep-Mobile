@@ -29,8 +29,8 @@ const RoomForRentScreen = () => {
         <FlatList
           style={{ paddingHorizontal: 20 }}
           data={listForRent?.data.items}
-          renderItem={({ item }) => <RoomForRentScreen.RoomItem roomData={item} />}
-          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => <RoomForRentScreen.RoomItem roomData={item.room} />}
+          keyExtractor={(item) => item.room._id}
         />
       )}
 

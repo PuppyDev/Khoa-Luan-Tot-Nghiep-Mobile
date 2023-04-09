@@ -4,7 +4,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { userApi } from "../api/userApi";
 import COLORS from "../consts/colors";
 import AccountScreen from "./Auth/AccountScreen";
-import SettingScreen from "./Auth/Setting";
 import HomeScreen from "./Home/HomeScreen";
 import NotificationsScreen from "./Home/NotificationsScreen";
 import SavedScreen from "./Home/SavedScreen";

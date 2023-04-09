@@ -19,7 +19,6 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
   const getBalance = async () => {
     try {
       const response = await userApi.getWalletInfo();
-      console.log("🚀 ~ file: WalletScreen.tsx:18 ~ getBalance ~ response:", response);
       setWalletInfo(response.data);
     } catch (error) {
       console.log("🚀 ~ file: WalletScreen.tsx:16 ~ getBalance ~ error:", error);
@@ -115,9 +114,15 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.menuWrapper}>
         <TouchableRipple onPress={() => navigation.navigate("WalletScreen")}>
           <View style={styles.menuItem}>
-            <Ionicons name="cash-outline" size={25} color="#777777" />
+            <Ionicons name="wallet-outline" size={25} color="#777777" />
 
             <Text style={styles.menuItemText}> Wallet </Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => navigation.navigate("InvoiceScreen")}>
+          <View style={styles.menuItem}>
+            <Ionicons name="receipt-outline" size={25} color="#777777" />
+            <Text style={styles.menuItemText}> Invoices </Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate("AddroomScreen")}>
@@ -128,13 +133,13 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate("RoomForRentScreen")}>
           <View style={styles.menuItem}>
-            <Ionicons name="hammer-outline" size={25} color="#777777" />
+            <Ionicons name="pricetags-outline" size={25} color="#777777" />
             <Text style={styles.menuItemText}>For Rent</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate("ChangePassScreen")}>
           <View style={styles.menuItem}>
-            <Ionicons name="apps" size={25} color="#777777" />
+            <Ionicons name="apps-outline" size={25} color="#777777" />
             <Text style={styles.menuItemText}>Change Password</Text>
           </View>
         </TouchableRipple>
