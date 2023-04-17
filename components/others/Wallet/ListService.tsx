@@ -8,11 +8,11 @@ import { useAppSelector } from "../../../app/hook";
 
 const listService = [
   {
-    name: "Top Up",
+    name: "Nạp tiền",
     icon: require("../../../assets/ic_wallet.png"),
   },
   {
-    name: "With Draw",
+    name: "Rút tiền",
     icon: require("../../../assets/ic_transfer.png"),
   },
 ];
@@ -31,7 +31,7 @@ const renderServiceItem = (item: any) => {
         if (supported) {
           Linking.openURL(data.paymentUrl);
         } else {
-          Alert.alert("Error", "Topup error, internal server");
+          Alert.alert("Lỗi nạp tiền", "Nạp tiền lỗi vui lòng thử lại sau");
         }
       });
     },
@@ -60,7 +60,7 @@ const renderServiceItem = (item: any) => {
               }}
             >
               <TextInput
-                label="Enter money"
+                label="Nhập số tiền muốn nạp"
                 onChangeText={(value) => {
                   setMoneyTopup(value);
                 }}
@@ -73,7 +73,7 @@ const renderServiceItem = (item: any) => {
               />
               <TouchableOpacity onPress={() => mutateTopup.mutate({ walletAddress: wallet.walletAddress, amount: Number(moneyTopup) })}>
                 <Button mode="contained" style={{ marginTop: 20 }} disabled={mutateTopup.isLoading} loading={mutateTopup.isLoading}>
-                  Confirm
+                  Xác nhận
                 </Button>
               </TouchableOpacity>
             </View>

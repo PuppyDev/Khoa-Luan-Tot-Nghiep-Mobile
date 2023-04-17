@@ -1,11 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import moment from "moment";
 import { Alert, Linking, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Button } from "react-native-paper";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { invoiceApi } from "../../api/invoiceApi";
 import { userApi } from "../../api/userApi";
-import moment from "moment";
-import { ActivityIndicator, Button, Tooltip } from "react-native-paper";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import MainHeader from "../../components/common/Header/MainHeader";
 import COLORS from "../../consts/colors";
 
@@ -24,9 +23,9 @@ const InvoiceScreen = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["getInvoices"] });
       queryClient.invalidateQueries({ queryKey: ["getAllNotifications"] });
-      Alert.alert("Notifications", "Pay invoice successfully!!!");
+      Alert.alert("Thông báo", "Thanh toán hoá đơn thành công!!!");
     },
-    onError: () => Alert.alert("Error !!!", "Something went wrong!!!"),
+    onError: () => Alert.alert("Lỗi !!!", "Lỗi đã xảy ra vui lòng thử lại!!!"),
   });
 
   const extendInvoiceMutate = useMutation({
@@ -34,9 +33,9 @@ const InvoiceScreen = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["getInvoices"] });
       queryClient.invalidateQueries({ queryKey: ["getAllNotifications"] });
-      Alert.alert("Notifications", "successful extension!!!");
+      Alert.alert("Thông báo", "Gia hạn thành công");
     },
-    onError: () => Alert.alert("Error !!!", "Something went wrong!!!"),
+    onError: () => Alert.alert("Lỗi !!!", "Lỗi đã xảy ra vui lòng thử lại"),
   });
 
   const ruleRender = data && data?.data && data.data.items && data.data.items.length > 0 && !isLoading;
@@ -55,10 +54,16 @@ const InvoiceScreen = () => {
   return (
     <SafeAreaView>
       <View style={{ marginBottom: 20 }}>
-        <MainHeader title="Invoices" />
+        <MainHeader title="Hoá đơn" />
       </View>
       <ScrollView style={{ paddingHorizontal: 20 }}>
         {/* {isLoading && ArrayFrom(6).map((item) => <InvoiceContainer.InvoiceSkeleton key={item} />)} */}
+
+        {data?.data && data.data.items && data.data.items.length === 0 && (
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <Text>Không có hoá đơn nào cần phải thanh toán cả</Text>
+          </View>
+        )}
 
         {ruleRender &&
           data.data.items.map((invoiceItem) => {
@@ -71,14 +76,14 @@ const InvoiceScreen = () => {
                   <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <Ionicons name="receipt-outline" size={34} color={COLORS.primary} />
                     <View style={{ marginVertical: 10, marginHorizontal: 15, flex: 1 }}>
-                      <Text style={{ paddingBottom: 5, fontWeight: "600", fontSize: 16 }}>Thanh toans tien dich vu</Text>
-                      {invoiceItem.txhash && <Text style={{ paddingBottom: 5 }}>Ma giao dich : {invoiceItem.txhash.slice(0, 10) + "..."}</Text>}
-                      <Text style={{ paddingBottom: 5 }}>So tien can thanh toan :{invoiceItem.amount}</Text>
+                      <Text style={{ paddingBottom: 5, fontWeight: "600", fontSize: 16 }}>Thanh toán tiền dịch vụ</Text>
+                      {invoiceItem.txhash && <Text style={{ paddingBottom: 5 }}>Mã giao dịch : {invoiceItem.txhash.slice(0, 10) + "..."}</Text>}
+                      <Text style={{ paddingBottom: 5 }}>Số tiền :{invoiceItem.amount}</Text>
 
-                      <Text>Time created :{moment(invoiceItem.createdAt).format("MM/DD/YYYY")}</Text>
+                      <Text>Thời gian tạo :{moment(invoiceItem.createdAt).format("MM/DD/YYYY")}</Text>
                     </View>
-                    {invoiceItem.payStatus !== "Complete" && <Text>{dayLeft} days left</Text>}
-                    {invoiceItem.payStatus === "Complete" && <Text>Payed</Text>}
+                    {invoiceItem.payStatus !== "Complete" && <Text>còn lại {dayLeft < 0 ? 0 : dayLeft} ngày</Text>}
+                    {invoiceItem.payStatus === "Complete" && <Text>Đã thanh toán</Text>}
                   </View>
 
                   {invoiceItem.payStatus !== "Complete" && (
@@ -90,7 +95,7 @@ const InvoiceScreen = () => {
                           mode="contained"
                           loading={extendInvoiceMutate.isLoading}
                         >
-                          Extend time
+                          Gia hạn
                         </Button>
                       )}
                       <Button
@@ -98,8 +103,9 @@ const InvoiceScreen = () => {
                         onPress={() => payInvoiceMutate.mutate(invoiceItem._id)}
                         mode="contained"
                         loading={payInvoiceMutate.isLoading}
+                        style={{ marginLeft: 5 }}
                       >
-                        Pay now
+                        Thanh toán
                       </Button>
                     </View>
                   )}

@@ -23,7 +23,7 @@ const { width } = Dimensions.get("screen");
 const cardWidth = width / 1.8;
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
-  const categories = ["All", "Popular", "Top Rated", "Featured", "Luxury"];
+  const categories = ["Tất cả", "Quận 1", "Bình thạnh", "Gò vấp", "Quận 3"];
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
   const [activeCardIndex, setActiveCardIndex] = React.useState(0);
   const scrollX = React.useRef(new Animated.Value(0)).current;
@@ -130,7 +130,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       <StatusBar barStyle="light-content" translucent backgroundColor="rgba(0,0,0,0)" />
       <View style={style.header}>
         <View style={{ paddingBottom: 15 }}>
-          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Find your room in</Text>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Tìm phòng của bạn ở</Text>
           <View style={{ flexDirection: "row" }}>
             <Text
               style={{
@@ -139,7 +139,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
                 color: COLORS.primary,
               }}
             >
-              Ho Chi Minh City
+              Thành phố Hồ Chí Minh
             </Text>
           </View>
         </View>
@@ -150,7 +150,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           <View style={style.searchInputContainer}>
             <Icon name="search" size={30} style={{ marginLeft: 20 }} />
             <TextInput
-              placeholder="Search"
+              placeholder="Tìm kiếm phòng"
               style={{
                 fontSize: 20,
                 paddingLeft: 10,

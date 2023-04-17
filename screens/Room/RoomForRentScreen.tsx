@@ -1,13 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from "react-native-popup-menu";
 import { roomApi } from "../../api/roomApi";
+import { userApi } from "../../api/userApi";
 import MainHeader from "../../components/common/Header/MainHeader";
 import COLORS from "../../consts/colors";
 import { room } from "../../models/room";
-import { convertVNDtoUSD } from "../../utils/money";
+import { convertMoneyToVndText } from "../../utils/money";
+import { getCurrentDate } from "../../utils/time";
 
 const RoomForRentScreen = () => {
   const { data: listForRent, isLoading } = useQuery({
@@ -16,9 +18,31 @@ const RoomForRentScreen = () => {
     refetchOnWindowFocus: false,
   });
 
+  const { data: dataRequests, isLoading: requestsLoading } = useQuery({
+    queryKey: ["getAllRequestsCancelRoom"],
+    queryFn: () => userApi.getAllRequest(),
+  });
+
+  const ObjectCancelRequest = dataRequests?.data
+    .map((item) => {
+      const key = item.roomId;
+      const value = item.requestId;
+      return item.type === "CANCEL_RENTAL"
+        ? {
+            [key]: value,
+          }
+        : null;
+    })
+    .reduce(function (result, item) {
+      if (!item || !result) return result;
+      var key = Object.keys(item)[0];
+      result[key] = item[key];
+      return result;
+    }, {});
+
   return (
     <SafeAreaView>
-      <MainHeader title="Room for rent" />
+      <MainHeader title="Phòng cho thuê" />
 
       {isLoading && (
         <View style={{ height: "100%", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -29,23 +53,46 @@ const RoomForRentScreen = () => {
         <FlatList
           style={{ paddingHorizontal: 20 }}
           data={listForRent?.data.items}
-          renderItem={({ item }) => <RoomForRentScreen.RoomItem roomData={item.room} />}
+          renderItem={({ item }) => <RoomForRentScreen.RoomItem ObjectCancelRequest={ObjectCancelRequest} roomData={item.room} />}
           keyExtractor={(item) => item.room._id}
         />
       )}
 
       {!isLoading && listForRent?.data && listForRent.data.items.length === 0 && (
         <View style={{ height: "100%", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <Text>No data not found.</Text>
+          <Text>Bạn chưa cho thuê phòng nào.</Text>
         </View>
       )}
     </SafeAreaView>
   );
 };
 
-RoomForRentScreen.RoomItem = ({ roomData, isFavoritePage = false }: { roomData?: room | undefined | null; isFavoritePage?: boolean }) => {
+RoomForRentScreen.RoomItem = ({
+  roomData,
+  isFavoritePage = false,
+  ObjectCancelRequest,
+}: {
+  roomData?: room | undefined | null;
+  isFavoritePage?: boolean;
+  ObjectCancelRequest?: any;
+}) => {
   if (!roomData) return <View></View>;
   const navigation = useNavigation();
+
+  const queryClient = useQueryClient();
+
+  const { mutate: mutateAcceptCancel, isLoading: loadingAcceptCancel } = useMutation({
+    mutationFn: userApi.doAcceptCancelRent,
+    mutationKey: ["handleAcceptContract"],
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getRoomRented"] });
+      queryClient.invalidateQueries({ queryKey: ["getAllRequestsCancelRoom"] });
+    },
+  });
+
+  const handleAcceptCancel = () => {
+    if (roomData) mutateAcceptCancel(ObjectCancelRequest[roomData._id]);
+  };
 
   return (
     <View style={{ paddingVertical: 10 }}>
@@ -62,25 +109,34 @@ RoomForRentScreen.RoomItem = ({ roomData, isFavoritePage = false }: { roomData?:
 
       <View style={{ justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
         <Text style={style.StyledHeading}>{roomData?.name || "upading..."}</Text>
+        {roomData?.status === "already-rent" && (
+          <Menu style={{ paddingHorizontal: 20 }}>
+            <MenuTrigger text="..." />
+            <MenuOptions>
+              <MenuOption
+                text="Xem hợp đồng"
+                onSelect={() => navigation.navigate("ContractScreen" as never, { item: roomData, isSign: true } as never)}
+              />
 
-        <Menu>
-          <MenuTrigger text="..." />
-          <MenuOptions>
-            <MenuOption
-              text="View Contract"
-              onSelect={() => navigation.navigate("ContractScreen" as never, { item: roomData, isSign: true } as never)}
-            />
-            <MenuOption text="Service Declaration" onSelect={() => navigation.navigate("RoomDeclaration" as never, roomData._id as never)} />
-          </MenuOptions>
-        </Menu>
+              {ObjectCancelRequest?.[roomData?._id] && (
+                <MenuOption text={loadingAcceptCancel ? "Loading..." : "Chấp nhận yêu cầu huỷ"} onSelect={() => handleAcceptCancel()} />
+              )}
+
+              {(roomData.demandAt === 0 || roomData.demandAt === getCurrentDate().month) && (
+                <MenuOption text="Khai báo dịch vụ" onSelect={() => navigation.navigate("RoomDeclaration" as never, roomData._id as never)} />
+              )}
+            </MenuOptions>
+          </Menu>
+        )}
       </View>
 
       <View style={{ justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
-        <Text style={{ color: COLORS.primary, fontWeight: "500", fontSize: 14 }}>{convertVNDtoUSD(roomData.basePrice)} / person</Text>
+        <Text style={{ color: COLORS.primary, fontWeight: "500", fontSize: 14 }}>{convertMoneyToVndText(roomData.basePrice)} / người</Text>
 
-        {roomData?.status === "available" && <Text style={{ color: "#385898" }}>Availabed</Text>}
-        {roomData?.status === "not-available" && <Text style={{ color: "red" }}>Unsuitable</Text>}
-        {roomData?.status === "already-rent" && <Text style={{ color: "green" }}>Currently being rented</Text>}
+        {roomData?.status === "available" && <Text style={{ color: "#385898" }}>Chưa được thuê</Text>}
+        {roomData?.status === "not-available" && <Text style={{ color: "red" }}>Hết hợp đồng</Text>}
+        {roomData?.status === "already-rent" && !ObjectCancelRequest?.[roomData?._id] && <Text style={{ color: "green" }}>Đang được thuê</Text>}
+        {ObjectCancelRequest?.[roomData?._id] && <Text style={{ color: "#FF9671" }}>Yêu cầu huỷ hợp đồng</Text>}
       </View>
     </View>
   );

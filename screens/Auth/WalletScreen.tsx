@@ -7,7 +7,7 @@ import MainHeader from "../../components/common/Header/MainHeader";
 import ListService from "../../components/others/Wallet/ListService";
 import RecentTransaction from "../../components/others/Wallet/RecentTransaction";
 import { IWalletInfo } from "../../models/user";
-import { convertVNDtoUSD } from "../../utils/money";
+import { convertMoneyToVndText } from "../../utils/money";
 
 const WalletScreen = () => {
   const [walletInfo, setWalletInfo] = useState<IWalletInfo>();
@@ -34,13 +34,13 @@ const WalletScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView style={styles.container}>
-        <MainHeader title="My Wallet" />
+        <MainHeader title="Ví của tôi" />
         <View style={styles.card}>
           <CardWallet />
         </View>
 
         <View>
-          <Text style={styles.balanceText}>Balance : {convertVNDtoUSD((walletInfo?.balance as number) || 0)}</Text>
+          <Text style={styles.balanceText}>Số dư : {convertMoneyToVndText((walletInfo?.balance as number) || 0)}</Text>
         </View>
         <ListService />
         <RecentTransaction listTransactions={walletTransaction?.data?.items || []} />

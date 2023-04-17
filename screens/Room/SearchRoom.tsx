@@ -27,9 +27,9 @@ const SearchRoom = () => {
 
   return (
     <SafeAreaView>
-      <MainHeader title="Search" />
+      <MainHeader title="Tìm kiếm" />
       <SearchInput />
-      <SearchResult roomData={roomData?.data || null} />
+      <SearchResult roomData={roomData?.data.items || null} />
     </SafeAreaView>
   );
 };

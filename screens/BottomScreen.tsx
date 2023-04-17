@@ -27,15 +27,15 @@ const BottomScreen = () => {
           let iconName;
           let rn = route.name;
 
-          if (rn === "Home") {
+          if (rn === "Trang chủ") {
             iconName = focused ? "home" : "home-outline";
-          } else if (rn === "Search") {
+          } else if (rn === "Tìm kiếm") {
             iconName = focused ? "search" : "search-outline";
-          } else if (rn === "notifications") {
+          } else if (rn === "Thông báo") {
             iconName = focused ? "notifications" : "notifications-outline";
-          } else if (rn === "Account") {
+          } else if (rn === "Tài khoản") {
             iconName = focused ? "person" : "person-outline";
-          } else if (rn === "Saved") {
+          } else if (rn === "Đã lưu") {
             iconName = focused ? "heart" : "heart-outline";
           }
 
@@ -46,11 +46,11 @@ const BottomScreen = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Search" component={SearchRoom} />
-      <Tab.Screen name="Saved" component={SavedScreen} />
-      <Tab.Screen name="notifications" component={NotificationsScreen} options={{ tabBarBadge: notificationUnCheck }} />
-      <Tab.Screen name="Account" component={AccountScreen} />
+      <Tab.Screen name="Trang chủ" component={HomeScreen} />
+      <Tab.Screen name="Tìm kiếm" component={SearchRoom} />
+      <Tab.Screen name="Đã lưu" component={SavedScreen} />
+      <Tab.Screen name="Thông báo" component={NotificationsScreen} options={{ tabBarBadge: notificationUnCheck }} />
+      <Tab.Screen name="Tài khoản" component={AccountScreen} />
     </Tab.Navigator>
   );
 };

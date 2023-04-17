@@ -1,8 +1,9 @@
-import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import moment from "moment";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { ITransaction } from "../../../models/user";
-import { randomId } from "../../../utils";
-import { convertVNDtoUSD } from "../../../utils/money";
+import { convertStringToTitleCase, randomId } from "../../../utils";
+import { convertMoneyToVndText } from "../../../utils/money";
 
 const RenderTransactionItem = ({ transaction }: { transaction: ITransaction }) => (
   <View key={randomId()} style={styles.items}>
@@ -10,11 +11,11 @@ const RenderTransactionItem = ({ transaction }: { transaction: ITransaction }) =
       <Icon name="attach-money" size={30} />
     </View>
     <View style={styles.itemBody}>
-      <Text style={styles.type}>{transaction.action}</Text>
-      <Text style={styles.date}>{transaction.createdAt}</Text>
+      <Text style={styles.type}>{convertStringToTitleCase(transaction.action)}</Text>
+      <Text style={styles.date}>{moment(transaction.createdAt).format("DD/MM/YYYY, HH:mm:ss")}</Text>
     </View>
     <View>
-      <Text style={styles.payment}>{convertVNDtoUSD(transaction.actionAmount)}</Text>
+      <Text style={styles.payment}>{convertMoneyToVndText(transaction.actionAmount)}</Text>
     </View>
   </View>
 );
@@ -22,7 +23,7 @@ const RenderTransactionItem = ({ transaction }: { transaction: ITransaction }) =
 const RecentTransaction = ({ listTransactions }: { listTransactions: ITransaction[] }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Recent Transaction</Text>
+      <Text style={styles.title}>Lịch sử giao dịch</Text>
       <FlatList
         style={styles.list}
         data={listTransactions}

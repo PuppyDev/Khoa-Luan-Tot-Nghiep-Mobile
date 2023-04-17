@@ -34,11 +34,11 @@ const Register = ({ navigation }: { navigation: any }) => {
       const response = await authApi.register(dataRegister);
       if (response) {
         //@ts-ignore
-        Alert.alert("Register !!!", response?.message || "Tạo tài khoản thành công", [{ text: "OK", onPress: () => navigation.navigate("Login") }]);
+        Alert.alert("Đăng ký !!!", response?.message || "Tạo tài khoản thành công", [{ text: "OK", onPress: () => navigation.navigate("Login") }]);
       }
     } catch (error: any) {
       const { username, email, contactInfo } = error?.data?.message;
-      Alert.alert("Register Error!!!", username || email || contactInfo, [{ text: "OK", onPress: () => console.log("OK Pressed") }]);
+      Alert.alert("Lỗi Đăng ký !!", username || email || contactInfo, [{ text: "OK", onPress: () => console.log("OK Pressed") }]);
     }
   };
 

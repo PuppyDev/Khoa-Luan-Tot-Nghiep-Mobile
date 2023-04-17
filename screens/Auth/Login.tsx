@@ -41,7 +41,7 @@ const Login = ({ navigation }: { navigation: any }) => {
       }
     } catch (error: any) {
       if (error) {
-        Alert.alert("Login Error!!!", error?.data.message, [{ text: "OK", onPress: () => console.log("OK Pressed") }]);
+        Alert.alert("Đăng nhập thất bại", error?.data.message, [{ text: "OK", onPress: () => console.log("OK Pressed") }]);
       }
     }
   };

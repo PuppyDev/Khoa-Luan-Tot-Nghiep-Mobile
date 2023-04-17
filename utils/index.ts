@@ -50,3 +50,41 @@ export function convertPhone84(phoneNumber: string) {
   }
   return phoneNumber;
 }
+
+export function convertString(notificationType: string) {
+  switch (notificationType) {
+    case "INVOICE_TO_PAY":
+      return "Thanh toán hoá đơn";
+    case "CANCEL_REQUEST":
+      return "Huỷ hợp đồng";
+    case "CONTINUE_RENTAL":
+      return "Tiếp tục thuê";
+    default:
+      return "Thông báo";
+  }
+}
+
+interface Address {
+  city: string;
+  district: string;
+  ward: string;
+  street: string;
+  addressDetail: string;
+  fullText: string;
+}
+
+export function getFullAddress(address: Address): string {
+  const { city, district, ward, street, addressDetail } = address;
+  const formattedAddress = `${addressDetail.trim()} Đường ${street.trim()} ${ward.trim()} Quận ${district.trim()} Thành phố ${city.trim()}`;
+  return formattedAddress;
+}
+
+export function convertStringToTitleCase(input: string): string {
+  // Split the input string by underscores or hyphens
+  const words = input.split(/[_-]/);
+
+  // Capitalize the first letter of each word and join them with a space
+  const titleCase = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+
+  return titleCase;
+}

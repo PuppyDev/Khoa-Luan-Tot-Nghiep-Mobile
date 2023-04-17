@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  Dimensions,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, ImageBackground, Dimensions, Image } from "react-native";
 
 const width_screen = Dimensions.get("window").width;
 
@@ -19,10 +12,7 @@ const card_size = {
 
 const CardWallet = () => {
   return (
-    <ImageBackground
-      source={require("../../../assets/card_visa_bg.png")}
-      style={styles.card}
-    >
+    <ImageBackground source={require("../../../assets/card_visa_bg.png")} style={styles.card}>
       <View
         style={{
           display: "flex",
@@ -48,7 +38,7 @@ const CardWallet = () => {
       </View>
       <View style={styles.cardFooter}>
         <View>
-          <Text style={styles.cardHolderName}>Card holder</Text>
+          <Text style={styles.cardHolderName}>Chủ thẻ</Text>
           <Text style={styles.cardName}>Yone Doan</Text>
         </View>
         <Image source={require("../../../assets/visa_text.png")} />

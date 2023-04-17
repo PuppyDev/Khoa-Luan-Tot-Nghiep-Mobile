@@ -1,9 +1,10 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { FlatList, SafeAreaView, Text, View } from "react-native";
+import { Alert, FlatList, SafeAreaView, Text, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { invoiceApi } from "../../api/invoiceApi";
 import { serviceApi } from "../../api/serviceApi";
+import { userApi } from "../../api/userApi";
 import MainHeader from "../../components/common/Header/MainHeader";
 import { getCurrentDate } from "../../utils/time";
 
@@ -15,29 +16,6 @@ const RoomDeclaration = ({ navigation, route }: { navigation: any; route: any })
     formState: { errors },
   } = useForm({
     // resolver: yupResolver(schemaServiceDeclare),
-  });
-
-  const { mutate: createInvoiceMutate, isLoading: invoiceLoading } = useMutation({
-    mutationKey: ["CreateInvoice"],
-    mutationFn: invoiceApi.createInvoice,
-    onSuccess: () => {},
-    onError: () => {},
-  });
-
-  const {
-    mutate: updateServiceMutate,
-    isLoading,
-    isError,
-  } = useMutation({
-    mutationKey: ["UpdateServiceDemand"],
-    mutationFn: serviceApi.updateServiceDemand,
-    onSuccess: (data) => {
-      console.log("🚀 ~ file: DeclareRoomPage.tsx:48 ~ DeclareRoomPage ~ data:", data);
-      // createInvoiceMutate({contractId: "", invoiceInfo: {}})
-    },
-    onError: (err) => {
-      console.log("🚀 ~ file: DeclareRoomPage.tsx:50 ~ DeclareRoomPage ~ err:", err);
-    },
   });
 
   const { data: dataServices, isLoading: loadingServices } = useQuery({
@@ -52,27 +30,67 @@ const RoomDeclaration = ({ navigation, route }: { navigation: any; route: any })
     staleTime: Infinity,
   });
 
-  const handleUpdateService = () => {
-    if (invoiceLoading || isLoading) return;
+  const queryClient = useQueryClient();
 
-    if (!idRoom || !dataServices || !dataServices.data) return;
-    const { electricity_cost, internet_cost, water_cost } = getValues();
+  const { mutate: createInvoiceMutate, isLoading: invoiceLoading } = useMutation({
+    mutationKey: ["CreateInvoice"],
+    mutationFn: invoiceApi.createInvoice,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["getRoomRented"] });
+
+      Alert.alert("Thông báo", "Khai báo dịch vụ thành công!!!", [{ text: "OK", onPress: () => navigation.goBack() }]);
+    },
+    onError: () => {},
+  });
+
+  const { mutate: getContractMutate, isLoading: loadingContract } = useMutation({
+    mutationKey: ["getContractInfo"],
+    mutationFn: userApi.getDetailContract,
+    onSuccess: (data) => {
+      createInvoiceMutate({
+        contractId: data.data.contract._id || "",
+        invoiceInfo: {
+          listServiceDemands: dataServices ? dataServices?.data.map((item) => item._id) : [],
+        },
+      });
+    },
+    onError: (err) => {},
+  });
+
+  const {
+    mutate: updateServiceMutate,
+    isLoading,
+    isError,
+  } = useMutation({
+    mutationKey: ["UpdateServiceDemand"],
+    mutationFn: serviceApi.updateServiceDemand,
+    onSuccess: () => getContractMutate(idRoom || ""),
+    onError: (err) => {
+      console.log("🚀 ~ file: DeclareRoomPage.tsx:50 ~ DeclareRoomPage ~ err:", err);
+    },
+  });
+
+  const handleUpdateService = () => {
+    if (invoiceLoading || isLoading || !idRoom || !dataServices || !dataServices.data) return;
+
     updateServiceMutate({
       roomId: idRoom,
       demandInfo: {
         atMonth: getCurrentDate().month,
         demands: dataServices?.data.map((item) => {
-          const isElectric = item.service.name.trim() === "electricity cost";
-          const isInternet = item.service.name.trim() === "internet cost";
+          const isQuality = item.type === 0;
+          const data = getValues(item.service.name.split(" ").join("_"));
           return {
-            serviceId: item._id,
-            newIndicator: isElectric ? electricity_cost : 0,
-            quality: isElectric ? 0 : isInternet ? internet_cost : water_cost,
+            serviceId: item.service._id,
+            newIndicator: !isQuality ? data : 0,
+            quality: !isQuality ? 0 : data,
           };
         }),
       },
     });
   };
+
+  const isLoadingg = loadingServices || invoiceLoading || loadingContract;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -82,46 +100,49 @@ const RoomDeclaration = ({ navigation, route }: { navigation: any; route: any })
         <View style={{ paddingHorizontal: 20 }}>
           <FlatList
             data={dataServices?.data}
-            renderItem={(item) => (
-              <View style={{ marginTop: 30 }}>
-                <Text style={{ fontSize: 18, textTransform: "capitalize", paddingBottom: 5 }}>{item.item.service.name}</Text>
-                <TextInput
-                  placeholder={item.item.service.description}
-                  keyboardType="numeric"
-                  onChangeText={(value) => {
-                    const serviceName = item.item.service.name.trim().replace(/ /g, "_") || "name";
-                    setValue(serviceName, value);
-                  }}
-                  mode="outlined"
-                />
+            renderItem={(item) => {
+              const serviceData = item.item;
 
-                <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", marginTop: 5 }}>
-                  <Text>Unit price for {item.item.service.name.trim()} </Text>
+              return (
+                <View style={{ marginTop: 30 }}>
+                  <Text style={{ fontSize: 18, textTransform: "capitalize", paddingBottom: 5 }}>{serviceData.service.name}</Text>
+                  <TextInput
+                    placeholder={serviceData.service.description}
+                    keyboardType="numeric"
+                    onChangeText={(value) => {
+                      const serviceName = serviceData.service.name.trim().replace(/ /g, "_") || "name";
+                      setValue(serviceName, value);
+                    }}
+                    mode="outlined"
+                  />
 
-                  {item.item.service.name.trim() === "electricity cost" || item.item.service.name.trim() === "Tiền điện" ? (
-                    <View>
-                      <Text>old index : {item.item.oldIndicator}</Text>
-                      <Text>new index : {getValues("electricity_cost") || 0}</Text>
-                    </View>
-                  ) : (
-                    <View>
-                      <Text>Service fee {item.item?.service?.basePrice}</Text>
-                    </View>
-                  )}
+                  <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", marginTop: 5 }}>
+                    <Text>Khai báo {serviceData.service.name.trim()} </Text>
+
+                    {serviceData?.type === 1 ? (
+                      <View>
+                        <Text>chỉ số cũ : {serviceData.oldIndicator}</Text>
+                      </View>
+                    ) : (
+                      <View>
+                        <Text>Phí dịch vụ : {serviceData?.service?.basePrice}</Text>
+                      </View>
+                    )}
+                  </View>
                 </View>
-              </View>
-            )}
+              );
+            }}
           />
 
-          <Button loading={loadingServices || invoiceLoading} mode="contained" onPress={handleUpdateService} style={{ marginTop: 30 }}>
-            Submit now
+          <Button disabled={isLoadingg} loading={isLoadingg} mode="contained" onPress={handleUpdateService} style={{ marginTop: 30 }}>
+            Khai báo
           </Button>
         </View>
       )}
 
       {!dataServices?.data && (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <Text>Translation cannot be declared</Text>
+          <Text>Không thể khai báo dịch vụ</Text>
         </View>
       )}
     </SafeAreaView>

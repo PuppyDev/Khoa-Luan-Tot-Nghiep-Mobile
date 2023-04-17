@@ -19,7 +19,7 @@ import { room } from "../../models/room";
 import { schemaFormCreateRoom } from "../../schemas/form";
 import { randomId } from "../../utils";
 
-const labels = ["Information", "Address", "Utilities", "Confirmation"];
+const labels = ["Thông tin ", "Địa chỉ", "Tiện ích", "Xác nhận"];
 const customStyles = {
   stepIndicatorSize: 30,
   currentStepIndicatorSize: 40,
@@ -187,7 +187,7 @@ const AddRoomScreen = ({ route }: { route: any }) => {
     try {
       const response = await roomApi.createRoom(values);
 
-      Alert.alert("Room info", "Create new room successfully!!!", [
+      Alert.alert("Thành công", "Tạo phòng mới thành công!!!", [
         {
           text: "OK",
           onPress: () => {
@@ -227,7 +227,7 @@ const AddRoomScreen = ({ route }: { route: any }) => {
 
   return (
     <SafeAreaView>
-      <MainHeader title={false ? "Edit Your Room" : "Add New Room"} />
+      <MainHeader title={false ? "Chỉnh sửa phòng" : "Thêm phòng mới"} />
       <View
         style={{
           marginTop: 20,
@@ -244,19 +244,19 @@ const AddRoomScreen = ({ route }: { route: any }) => {
       <ScrollView style={style.container}>
         {currentPosition === 0 && (
           <View>
-            <Text style={style.headingText}>Room infomation</Text>
+            <Text style={style.headingText}>Thông tin phòng</Text>
 
             <View style={style.blockInfo}>
-              <Input control={control} placeholder="Acreage of room " name="acreage" error={errors.acreage?.message} />
+              <Input control={control} placeholder="Diện tích" name="acreage" error={errors.acreage?.message} />
             </View>
 
-            <Input control={control} placeholder="Number of room/people" name="totalNbPeople" error={errors.totalNbPeople?.message} />
+            <Input control={control} placeholder="Số người tối đa" name="totalNbPeople" error={errors.totalNbPeople?.message} />
 
-            <Input control={control} placeholder="Enter people current in room" name="nbCurrentPeople" error={errors.nbCurrentPeople?.message} />
+            <Input control={control} placeholder="Số người hiện tại" name="nbCurrentPeople" error={errors.nbCurrentPeople?.message} />
 
             <View style={style.flex2Item}>
               <View>
-                <Text style={style.headerBlock}>Room Type</Text>
+                <Text style={style.headerBlock}>Kiểu phòng</Text>
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
@@ -278,7 +278,7 @@ const AddRoomScreen = ({ route }: { route: any }) => {
                 />
               </View>
               <View>
-                <Text style={style.headerBlock}>Gender</Text>
+                <Text style={style.headerBlock}>Giới tính</Text>
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
@@ -302,29 +302,29 @@ const AddRoomScreen = ({ route }: { route: any }) => {
             </View>
 
             <View style={{ paddingVertical: 10 }} />
-            <Text style={style.headingText}>Expenses</Text>
+            <Text style={style.headingText}>Chi phí</Text>
             <View style={{ paddingVertical: 5 }} />
 
-            <Input control={control} placeholder="Rental price" name="basePrice" error={errors.basePrice?.message} />
-            <Input control={control} placeholder="Deposit money" name="deposit" error={errors.deposit?.message} />
+            <Input control={control} placeholder="Tiền thuê phòng" name="basePrice" error={errors.basePrice?.message} />
+            <Input control={control} placeholder="Tiền đặt cọc" name="deposit" error={errors.deposit?.message} />
 
-            <Input control={control} placeholder="Electric cost" name="roomElectric" error={errors.roomElectric?.message} />
+            <Input control={control} placeholder="Tiền điện" name="roomElectric" error={errors.roomElectric?.message} />
 
-            <Input control={control} placeholder="Water cost" name="waterPrice" error={errors.waterPrice?.message} />
+            <Input control={control} placeholder="Tiền nước" name="waterPrice" error={errors.waterPrice?.message} />
 
-            <Input control={control} placeholder="Internet cost" name="internetCost" error={errors.internetPrice?.message} />
+            <Input control={control} placeholder="Tiền mạng" name="internetCost" error={errors.internetPrice?.message} />
           </View>
         )}
 
         {currentPosition === 1 && (
           <View>
-            <Text style={style.headingText}>Address</Text>
-            <DropdownSelect control={control} name="cityName" placeholder="Press to choose City" />
+            <Text style={style.headingText}>Địa chỉ</Text>
+            <DropdownSelect control={control} name="cityName" placeholder="Vui lòng chọn thành phố" />
             <DropdownSelect
               data={dataDistric?.data.listDitrict.map((item) => ({ label: item, value: item }))}
               control={control}
               name="ditrictName"
-              placeholder="Press to choose District"
+              placeholder="Chọn Quận Huyện"
               onchange={(item: { label: string; value: string } | null) => {
                 if (item?.value) setDistrictName(item.value);
                 else setDistrictName("Quận 1");
@@ -334,29 +334,29 @@ const AddRoomScreen = ({ route }: { route: any }) => {
               data={dataWards?.data.wards.map((item) => ({ label: item, value: item }))}
               control={control}
               name="wardName"
-              placeholder="Press to choose Ward"
+              placeholder="Vui lòng chọn phường / ấp"
             />
             <DropdownSelect
               data={dataNameDistricts?.data.streets.map((item) => ({ label: item, value: item }))}
               control={control}
               name="streetName"
-              placeholder="Press to choose street name"
+              placeholder="Chọn tên đường"
             />
-            <Input control={control} placeholder="Ex: 16/19 Nguyen thai son" name="addressDetail" error={errors.addressDetail?.message} />
+            <Input control={control} placeholder="16/19 Nguyen thai son" name="addressDetail" error={errors.addressDetail?.message} />
           </View>
         )}
 
         {currentPosition === 2 && (
           <View>
-            <Text style={{ ...style.headingText, paddingVertical: 10 }}>Image</Text>
+            <Text style={{ ...style.headingText, paddingVertical: 10 }}>Hình ảnh</Text>
 
             <TouchableOpacity style={style.ImageUploadStyle}>
               <Icon name="cloud-upload" size={50} color={COLORS.primary} />
-              <Text>Click here to post images </Text>
-              <Text>from the gallery</Text>
+              <Text>Tải hình ảnh lên </Text>
+              <Text>từ thư viện</Text>
             </TouchableOpacity>
 
-            <Text style={{ ...style.headingText, paddingVertical: 10 }}>Utilities</Text>
+            <Text style={{ ...style.headingText, paddingVertical: 10 }}>Tiện ích</Text>
 
             <View
               style={{
@@ -412,13 +412,13 @@ const AddRoomScreen = ({ route }: { route: any }) => {
             }}
             style={style.buttonLogin}
           >
-            Next
+            Tiếp tục
           </Button>
         ) : (
           <View>
-            <Text style={style.headingText}>Confirmation</Text>
+            <Text style={style.headingText}>Xác nhận</Text>
             <View style={style.blockInfo}>
-              <Input control={control} placeholder="Enter title of the post " name="name" error={errors.name?.message} />
+              <Input control={control} placeholder="Nhập tiêu đề cho phòng" name="name" error={errors.name?.message} />
 
               <Controller
                 control={control}
@@ -429,7 +429,7 @@ const AddRoomScreen = ({ route }: { route: any }) => {
                     numberOfLines={4}
                     maxLength={40}
                     {...field}
-                    placeholder="Enter room description ( eviroment, sercurity, ...)"
+                    placeholder="Mô tả thêm về phòng của bạn"
                     style={style.textDes}
                   />
                 )}
@@ -442,7 +442,7 @@ const AddRoomScreen = ({ route }: { route: any }) => {
                 loading={isLoading || isSubmitting}
                 style={style.buttonLogin}
               >
-                Publish room
+                Cho thuê ngay
               </Button>
             </View>
           </View>

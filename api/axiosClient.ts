@@ -60,7 +60,7 @@ const createAxiosInstance = () => {
 
 export const deleteToken = async () => {
   await AsyncStorage.clear();
-  Alert.alert("Session Expired", "Please log in again.", [{ text: "OK", onPress: () => store.dispatch(setUserInfo(null)) }]);
+  Alert.alert("Hết hạn đăng nhập", "Vui lòng đăng nhập lại để tiếp tục sử dụng", [{ text: "OK", onPress: () => store.dispatch(setUserInfo(null)) }]);
 };
 
 export default createAxiosInstance();

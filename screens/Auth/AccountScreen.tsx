@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-import { View, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
-import { Avatar, Title, Caption, Text, TouchableRipple } from "react-native-paper";
+import { useEffect, useState } from "react";
+import { SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Avatar, Caption, Text, Title, TouchableRipple } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { deleteToken } from "../../api/axiosClient";
 import { roomApi } from "../../api/roomApi";
@@ -9,7 +9,7 @@ import { userApi } from "../../api/userApi";
 import { useAppSelector } from "../../app/hook";
 import { IWalletInfo } from "../../models/user";
 import { convertPhone84 } from "../../utils";
-import { convertVNDtoUSD } from "../../utils/money";
+import { convertMoneyToVndText } from "../../utils/money";
 
 const AccountScreen = ({ navigation }: { navigation: any }) => {
   const { user } = useAppSelector((state) => state.authSlice.userInfo);
@@ -57,9 +57,9 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
                 },
               ]}
             >
-              {user.name || "Updating..."}
+              {user.name || user.username || "Updating..."}
             </Title>
-            <Caption style={styles.caption}>@{user.username}</Caption>
+            <Caption style={styles.caption}>@{user.username || user.name}</Caption>
           </View>
         </View>
       </View>
@@ -68,7 +68,7 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
         <View style={styles.row}>
           {/* <Icon name="map-marker-radius" color="#777777" size={20}/> */}
           <Ionicons name="locate-outline" size={20} color="#777777" />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>Ho Chi Minh, VietNam</Text>
+          <Text style={{ color: "#777777", marginLeft: 20 }}>Hồ Chí Minh, Việt Nam</Text>
         </View>
         <View style={styles.row}>
           {/* <Icon name="phone" color="#777777" size={20}/> */}
@@ -78,7 +78,7 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
         <View style={styles.row}>
           {/* <Icon name="email" color="#777777" size={20}/> */}
           <Ionicons name="mail-open-outline" size={20} color="#777777" />
-          <Text style={{ color: "#777777", marginLeft: 20 }}>yonedoan@gmail.com</Text>
+          <Text style={{ color: "#777777", marginLeft: 20 }}>{user.email || "yonedoan@gmail.com"}</Text>
         </View>
       </View>
 
@@ -93,8 +93,8 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
             },
           ]}
         >
-          <Title>{convertVNDtoUSD((walletInfo?.balance as number) || 0)}</Title>
-          <Caption>Wallet Bughouse</Caption>
+          <Title>{convertMoneyToVndText((walletInfo?.balance as number) || 0)}</Title>
+          <Caption>Ví của tôi</Caption>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("RoomRentedScreen")}
@@ -107,40 +107,33 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
           ]}
         >
           <Title>{listForRent?.data.items.length || 0}</Title>
-          <Caption>Rooms rented</Caption>
+          <Caption>Phòng đã thuê</Caption>
         </TouchableOpacity>
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => navigation.navigate("WalletScreen")}>
-          <View style={styles.menuItem}>
-            <Ionicons name="wallet-outline" size={25} color="#777777" />
-
-            <Text style={styles.menuItemText}> Wallet </Text>
-          </View>
-        </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate("InvoiceScreen")}>
           <View style={styles.menuItem}>
             <Ionicons name="receipt-outline" size={25} color="#777777" />
-            <Text style={styles.menuItemText}> Invoices </Text>
+            <Text style={styles.menuItemText}> Hoá đơn </Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate("AddroomScreen")}>
           <View style={styles.menuItem}>
             <Ionicons name="hammer-outline" size={25} color="#777777" />
-            <Text style={styles.menuItemText}>Publish Room</Text>
+            <Text style={styles.menuItemText}>Tạo phòng</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate("RoomForRentScreen")}>
           <View style={styles.menuItem}>
             <Ionicons name="pricetags-outline" size={25} color="#777777" />
-            <Text style={styles.menuItemText}>For Rent</Text>
+            <Text style={styles.menuItemText}>Phòng cho thuê</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate("ChangePassScreen")}>
           <View style={styles.menuItem}>
             <Ionicons name="apps-outline" size={25} color="#777777" />
-            <Text style={styles.menuItemText}>Change Password</Text>
+            <Text style={styles.menuItemText}>Thay đổi mật khẩu</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple
@@ -150,7 +143,7 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
         >
           <View style={styles.menuItem}>
             <Ionicons name="log-out-outline" size={25} color="#FF6347" />
-            <Text style={styles.menuItemText}>Logout</Text>
+            <Text style={styles.menuItemText}>Đăng xuất</Text>
           </View>
         </TouchableRipple>
       </View>

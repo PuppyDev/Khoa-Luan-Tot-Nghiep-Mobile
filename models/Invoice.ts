@@ -3,7 +3,7 @@ import { IContractItem } from "./contract";
 export interface IInvoice {
   contractId: string;
   invoiceInfo: {
-    listServiceDemands: IServiceDemaind[];
+    listServiceDemands: string[];
   };
 }
 

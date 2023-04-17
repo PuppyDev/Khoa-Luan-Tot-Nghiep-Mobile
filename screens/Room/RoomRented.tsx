@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import { SafeAreaView, Text, StyleSheet, View, FlatList } from "react-native";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { roomApi } from "../../api/roomApi";
 import MainHeader from "../../components/common/Header/MainHeader";
@@ -16,7 +15,7 @@ const RoomRented = () => {
 
   return (
     <SafeAreaView>
-      <MainHeader title="Room rented" />
+      <MainHeader title="Phòng đã thuê" />
 
       {isLoading && (
         <View style={styles.styledLoadingWrap}>
@@ -33,7 +32,7 @@ const RoomRented = () => {
 
       {!isLoading && listForRent?.data && listForRent.data.items.length === 0 && (
         <View style={styles.styledLoadingWrap}>
-          <Text>No data not found.</Text>
+          <Text>Bạn chưa thuê phòng nào.</Text>
         </View>
       )}
     </SafeAreaView>

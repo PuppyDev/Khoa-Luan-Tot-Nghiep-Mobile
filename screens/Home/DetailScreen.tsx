@@ -7,8 +7,8 @@ import RateComp from "../../components/common/Rate";
 import RoomDetailInfo from "../../components/common/Room/RoomDetailInfo";
 import COLORS from "../../consts/colors";
 import { room } from "../../models/room";
-import { convertPhone84, randomId } from "../../utils";
-import { convertVNDtoUSD } from "../../utils/money";
+import { convertPhone84, getFullAddress, randomId } from "../../utils";
+import { convertMoneyToVndText } from "../../utils/money";
 
 const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) => {
   const item: room = route.params;
@@ -27,6 +27,8 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
     // will pass data here to edit room
     navigation.navigate("AddroomScreen", item);
   };
+
+  console.log("🚀 ~ file: DetailScreen.tsx:71 ~ DetailsScreen ~ item?.address:", item?.address);
 
   return (
     <ScrollView
@@ -67,7 +69,7 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
               marginTop: 5,
             }}
           >
-            {item?.address.addressDetail}
+            {getFullAddress(item?.address)}
           </Text>
           <View
             style={{
@@ -86,7 +88,7 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>Room price</Text>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>Giá phòng</Text>
           <View style={style.priceTag}>
             <Text
               style={{
@@ -96,12 +98,12 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
                 marginLeft: 5,
               }}
             >
-              {convertVNDtoUSD(item?.basePrice)}
+              {convertMoneyToVndText(item?.basePrice)}
             </Text>
           </View>
         </View>
 
-        <DetailsScreen.Card label="Owner Infomation">
+        <DetailsScreen.Card label="Thông tin chủ phòng">
           <View
             style={{
               marginTop: 5,
@@ -119,38 +121,38 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
             </View>
 
             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-              <Text style={{ fontSize: 16 }}>{item?.owner?.name || item?.owner?.username || "Updating..."}</Text>
+              <Text style={{ fontSize: 16 }}>{item?.owner?.name || item?.owner?.username || "Đang cập nhập..."}</Text>
               <TouchableOpacity onPress={handleRedirectToCall}>
-                <Text style={{ fontSize: 16 }}>{convertPhone84(item?.owner?.phone || "0911336236") || "Updating..."}</Text>
+                <Text style={{ fontSize: 16 }}>{convertPhone84(item?.owner?.phone || "0911336236") || "Đang cập nhập..."}</Text>
               </TouchableOpacity>
             </View>
           </View>
         </DetailsScreen.Card>
 
-        <DetailsScreen.Card label="Room Infomation">
+        <DetailsScreen.Card label="Thông tin phòng">
           <RoomDetailInfo
             label="ROOM STATUS"
             value={item?.status === "already-rent" ? "Đã Thuê" : "Còn phòng"}
             highlight={item?.status === "already-rent" ? "unactive" : "active"}
           />
-          <RoomDetailInfo label="ROOM RATES" value={convertVNDtoUSD(item?.basePrice)} />
-          <RoomDetailInfo label="ACREAGE" value={item?.acreage + " m2"} />
-          <RoomDetailInfo label="CAPACITY" value={item?.gender === "All" ? "Male / Female" : item.gender} />
-          <RoomDetailInfo label="DEPOSIT" value={convertVNDtoUSD(item?.deposit)} />
-          <RoomDetailInfo label="ELECTRICITY" value={convertVNDtoUSD(3500)} />
-          <RoomDetailInfo label="ADDRESS" value={item.address.fullText} width="100%" />
+          <RoomDetailInfo label="Giá phòng" value={convertMoneyToVndText(item?.basePrice)} />
+          <RoomDetailInfo label="Diện tích" value={item?.acreage + " m2"} />
+          <RoomDetailInfo label="Sức chứa" value={item?.gender === "All" ? "Nam / Nữ" : item.gender == "Male" ? "Nam" : "Nữ"} />
+          <RoomDetailInfo label="Đặt cọc" value={convertMoneyToVndText(item?.deposit)} />
+          <RoomDetailInfo label="Tiền điện" value={convertMoneyToVndText(3500)} />
+          <RoomDetailInfo label="Địa chỉ" value={item.address.fullText} width="100%" />
         </DetailsScreen.Card>
 
-        <DetailsScreen.Card label="Amentilities">
+        <DetailsScreen.Card label="Tiện ích">
           <RoomDetailInfo label="ROOM STATUS" value={item?.status === "already-rent" ? "Đã Thuê" : "Còn phòng"} highlight="unactive" />
-          <RoomDetailInfo label="ROOM RATES" value={convertVNDtoUSD(item?.basePrice)} />
+          <RoomDetailInfo label="ROOM RATES" value={convertMoneyToVndText(item?.basePrice)} />
           <RoomDetailInfo label="ACREAGE" value={item?.acreage + " m2"} />
           <RoomDetailInfo label="CAPACITY" value={item?.gender === "All" ? "Male/Female" : item.gender} />
-          <RoomDetailInfo label="DEPOSIT" value={convertVNDtoUSD(item?.deposit)} />
-          <RoomDetailInfo label="ELECTRICITY" value={convertVNDtoUSD(3500)} />
+          <RoomDetailInfo label="DEPOSIT" value={convertMoneyToVndText(item?.deposit)} />
+          <RoomDetailInfo label="ELECTRICITY" value={convertMoneyToVndText(3500)} />
         </DetailsScreen.Card>
 
-        <DetailsScreen.Card label="Description">
+        <DetailsScreen.Card label="Mô tả">
           <Text>{item.description}</Text>
         </DetailsScreen.Card>
 
@@ -171,7 +173,7 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
                 fontSize: 18,
               }}
             >
-              Edit your room
+              Sửa phòng của bạn
             </Text>
           </Button>
         )}
@@ -184,7 +186,7 @@ const DetailsScreen = ({ navigation, route }: { navigation: any; route: any }) =
                 fontSize: 18,
               }}
             >
-              Rent now
+              Thuê ngay
             </Text>
           </Button>
         )}

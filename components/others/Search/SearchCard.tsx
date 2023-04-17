@@ -13,7 +13,6 @@ const SearchCard = ({ item, index }: { item: any; index: number }) => {
   const even = index % 2 === 0;
   return (
     <Card
-      // onPress={}
       style={{
         width: "100%",
         height: index % 3 === 0 ? 180 : 240,

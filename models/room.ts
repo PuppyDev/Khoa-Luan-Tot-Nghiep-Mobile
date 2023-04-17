@@ -64,6 +64,7 @@ export interface room {
   address: AddressType;
   period: number;
   status?: string;
+  demandAt?: string | number;
 }
 
 export type AddressType = {

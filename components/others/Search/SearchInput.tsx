@@ -21,7 +21,7 @@ const SearchInput = () => {
         </View>
       </View> */}
       <Searchbar
-        placeholder="Search"
+        placeholder="Nhập từ khoá"
         onChangeText={(data) => {
           console.log(data);
           setSearch(data);
@@ -34,7 +34,7 @@ const SearchInput = () => {
       <Portal>
         <Modal visible={isSearchPopup} onDismiss={() => setisSearchPopup(false)} contentContainerStyle={{ padding: 20 }}>
           <View style={{ backgroundColor: "white", padding: 10, borderRadius: 5 }}>
-            <Text>Example Modal. Click outside this area to dismiss.</Text>
+            <Text>Lọc kết quả</Text>
           </View>
         </Modal>
       </Portal>

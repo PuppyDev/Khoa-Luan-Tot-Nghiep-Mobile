@@ -49,10 +49,9 @@ const ContractScreen = ({ navigation, route }: { navigation: any; route: any }) 
     onSuccess: (data) => {
       setShowModalOTP(false);
       setIsShowContract(false);
-      Alert.alert("Notifications", "Rent room successfully!!!");
+      Alert.alert("Thông báo", "Thuê phòng thành công !!!!");
     },
     onError: (err) => {
-      console.log(err);
       setShowModalOTP(false);
     },
   });
@@ -76,8 +75,7 @@ const ContractScreen = ({ navigation, route }: { navigation: any; route: any }) 
         contractHash: contractHash || "",
       });
     } catch (error) {
-      console.log("🚀 ~ file: ContractScreen.tsx:82 ~ handleComfirmOTP ~ error:", error);
-      Alert.alert("Errors", JSON.stringify(error));
+      Alert.alert("Lỗi ký hợp đồng", JSON.stringify(error));
     }
   };
 
@@ -89,18 +87,18 @@ const ContractScreen = ({ navigation, route }: { navigation: any; route: any }) 
           <View>
             <View style={style.SignLocated}>
               <View style={style.cardViewSign}>
-                <Text style={{ ...style.headingText, borderRightColor: "transparent" }}>Ben Cho thue</Text>
+                <Text style={{ ...style.headingText, borderRightColor: "transparent" }}>Bên cho thuê</Text>
               </View>
 
               <View style={style.cardViewSign}>
-                <Text style={style.headingText}>Ben thue</Text>
+                <Text style={style.headingText}>Bên thuê</Text>
               </View>
             </View>
             <View style={style.SignLocated}>
               <View style={style.cardViewSign}>
                 <View style={style.CardSign}>
-                  <Text>Bao</Text>
-                  <Text style={{ fontSize: 15, marginTop: 5, color: COLORS.primary }}>Doan Ngoc Quoc Bao</Text>
+                  <Text>Bảo</Text>
+                  <Text style={{ fontSize: 15, marginTop: 5, color: COLORS.primary }}>Đoàn Ngọc Quốc Bảo</Text>
                 </View>
               </View>
 
@@ -110,7 +108,7 @@ const ContractScreen = ({ navigation, route }: { navigation: any; route: any }) 
                     <ActivityIndicator animating={true} color={"white"} />
                   ) : (
                     <TouchableOpacity onPress={handleComfirmOTP}>
-                      <Text>Click to Sign Contract </Text>
+                      <Text>Ký hợp đồng </Text>
                     </TouchableOpacity>
                   )}
                 </View>
