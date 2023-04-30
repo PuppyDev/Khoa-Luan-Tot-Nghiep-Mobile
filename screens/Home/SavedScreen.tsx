@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Alert, FlatList, Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
+import { Modal } from "react-native-paper";
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from "react-native-popup-menu";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { userApi } from "../../api/userApi";
@@ -44,6 +44,7 @@ const SavedScreen = () => {
 
 SavedScreen.RoomCard = ({ roomData, isFavoritePage = false }: { roomData?: room | undefined | null; isFavoritePage?: boolean }) => {
   if (!roomData) return <View></View>;
+  console.log("🚀 ~ file: SavedScreen.tsx:165 ~ roomData:", roomData);
   const dispatch = useAppDispatch();
   const { listFavorite } = useAppSelector((state) => state.roomSlice);
   const navigation = useNavigation();
@@ -94,70 +95,72 @@ SavedScreen.RoomCard = ({ roomData, isFavoritePage = false }: { roomData?: room 
   };
 
   return (
-    <TouchableOpacity style={{ paddingVertical: 10 }} onPress={() => navigation.navigate("DetailScreen" as never, roomData as never)}>
-      <View
-        style={{
-          shadowColor: "#171717",
-          shadowOffset: { width: -2, height: 4 },
-          shadowOpacity: 0.2,
-          shadowRadius: 3,
-          borderColor: "#ccc",
-          borderWidth: 1,
-          borderRadius: 15,
-          overflow: "hidden",
-        }}
-      >
-        <Image
+    <>
+      <TouchableOpacity style={{ paddingVertical: 10 }} onPress={() => navigation.navigate("DetailScreen" as never, roomData as never)}>
+        <View
           style={{
-            width: "100%",
-            height: 230,
+            shadowColor: "#171717",
+            shadowOffset: { width: -2, height: 4 },
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            borderColor: "#ccc",
+            borderWidth: 1,
             borderRadius: 15,
             overflow: "hidden",
           }}
-          source={{
-            uri:
-              roomData?.roomAttachment?.url?.[0] ||
-              "https://cf.bstatic.com/xdata/images/hotel/max1024x768/234762091.jpg?k=45540c95d66e3278d194a4a35994dd3491811d644b2a6cb3e3da1b187dfa7d06&o=&hp=1",
+        >
+          <Image
+            style={{
+              width: "100%",
+              height: 230,
+              borderRadius: 15,
+              overflow: "hidden",
+            }}
+            source={{
+              uri:
+                roomData?.roomAttachment?.url?.[0] ||
+                "https://cf.bstatic.com/xdata/images/hotel/max1024x768/234762091.jpg?k=45540c95d66e3278d194a4a35994dd3491811d644b2a6cb3e3da1b187dfa7d06&o=&hp=1",
+            }}
+          />
+        </View>
+
+        <Ionicons
+          name="heart"
+          size={30}
+          style={{
+            position: "absolute",
+            right: 10,
+            top: 20,
+            color: COLORS.primary,
           }}
+          onPress={handleAddFavoriteRoom}
         />
-      </View>
 
-      <Ionicons
-        name="heart"
-        size={30}
-        style={{
-          position: "absolute",
-          right: 10,
-          top: 20,
-          color: COLORS.primary,
-        }}
-        onPress={handleAddFavoriteRoom}
-      />
+        <View style={{ display: "flex", alignItems: "center", flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={{ fontSize: 16, fontWeight: "bold", paddingVertical: 10, textTransform: "capitalize", flex: 1 }}>
+            {roomData?.name.replace(/,/g, "") || "đang cập nhập..."}
+          </Text>
 
-      <View>
-        <Text style={{ fontSize: 16, fontWeight: "bold", paddingVertical: 10, textTransform: "capitalize" }}>
-          {roomData?.name || "đang cập nhập..."}
-        </Text>
+          {roomData.status === "already-rent" && (
+            <Menu>
+              <MenuTrigger text="..." />
+              <MenuOptions>
+                <MenuOption
+                  text={loadingContract ? "loading..." : `Huỷ hợp đồng`}
+                  onSelect={() => {
+                    setIdRoomSelected(roomData?._id);
+                  }}
+                />
+              </MenuOptions>
+            </Menu>
+          )}
+        </View>
 
-        {roomData.status === "already-rent" && (
-          <Menu style={{ paddingHorizontal: 20 }}>
-            <MenuTrigger text="..." />
-            <MenuOptions>
-              <MenuOption
-                text={loadingContract ? "loading..." : `Huỷ hợp đồng`}
-                onSelect={() => {
-                  setIdRoomSelected(roomData?._id);
-                }}
-              />
-            </MenuOptions>
-          </Menu>
-        )}
-      </View>
+        <Text style={{ color: COLORS.primary, fontWeight: "500", fontSize: 14 }}>{convertMoneyToVndText(roomData?.basePrice || 0)} / người</Text>
 
-      <Text style={{ color: COLORS.primary, fontWeight: "500", fontSize: 14 }}>{convertMoneyToVndText(roomData?.basePrice || 0)} / người</Text>
-
-      <Text style={{ paddingVertical: 10, color: "gray" }}>Địa chỉ : {getFullAddress(roomData?.address)}</Text>
-    </TouchableOpacity>
+        <Text style={{ paddingVertical: 10, color: "gray" }}>Địa chỉ : {getFullAddress(roomData?.address).replace(/,/g, "")}</Text>
+      </TouchableOpacity>
+    </>
   );
 };
 

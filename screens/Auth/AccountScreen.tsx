@@ -29,7 +29,7 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
     getBalance();
   }, []);
 
-  const { data: listForRent, isLoading } = useQuery({
+  const { data: listRoomRented, isLoading } = useQuery({
     queryKey: ["getRoomRented"],
     queryFn: () => roomApi.getRoomrented(),
     refetchOnWindowFocus: false,
@@ -93,7 +93,7 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
             },
           ]}
         >
-          <Title>{convertMoneyToVndText((walletInfo?.balance as number) || 0)}</Title>
+          <Title>{walletInfo?.balance ? convertMoneyToVndText(walletInfo?.balance as number) : 0}</Title>
           <Caption>Ví của tôi</Caption>
         </TouchableOpacity>
         <TouchableOpacity
@@ -106,7 +106,7 @@ const AccountScreen = ({ navigation }: { navigation: any }) => {
             },
           ]}
         >
-          <Title>{listForRent?.data.items.length || 0}</Title>
+          <Title>{listRoomRented?.data.items.length || 0}</Title>
           <Caption>Phòng đã thuê</Caption>
         </TouchableOpacity>
       </View>

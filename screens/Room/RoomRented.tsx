@@ -24,7 +24,7 @@ const RoomRented = () => {
       )}
       {!isLoading && listForRent && listForRent.data && listForRent.data.items.length > 0 && (
         <FlatList
-          style={{ paddingHorizontal: 20, marginBottom: 120 }}
+          style={{ paddingHorizontal: 20 }}
           data={listForRent?.data.items}
           renderItem={({ item }) => <SavedScreen.RoomCard roomData={item.room} />}
         />

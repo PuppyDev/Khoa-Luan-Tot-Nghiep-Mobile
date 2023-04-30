@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { ActivityIndicator, Alert, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import RenderHTML from "react-native-render-html";
@@ -27,6 +27,8 @@ const ContractScreen = ({ navigation, route }: { navigation: any; route: any }) 
         })
       : getContractTerm(),
   };
+
+  const queryClient = useQueryClient();
   const { mutate: mutateContract, isLoading: loadingContract } = useMutation({
     mutationFn: contractApi.createContract,
     mutationKey: ["PostNewContract"],
@@ -50,6 +52,8 @@ const ContractScreen = ({ navigation, route }: { navigation: any; route: any }) 
       setShowModalOTP(false);
       setIsShowContract(false);
       Alert.alert("Thông báo", "Thuê phòng thành công !!!!");
+      queryClient.invalidateQueries(["getRoomRented"]);
+      navigation.navigate("RoomRentedScreen");
     },
     onError: (err) => {
       setShowModalOTP(false);

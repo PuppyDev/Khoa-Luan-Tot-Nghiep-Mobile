@@ -13,7 +13,7 @@ import { getCurrentDate } from "../../utils/time";
 
 const RoomForRentScreen = () => {
   const { data: listForRent, isLoading } = useQuery({
-    queryKey: ["getRoomRented"],
+    queryKey: ["getRoomForRent"],
     queryFn: () => roomApi.getRoomForRent(),
     refetchOnWindowFocus: false,
   });
@@ -85,7 +85,7 @@ RoomForRentScreen.RoomItem = ({
     mutationFn: userApi.doAcceptCancelRent,
     mutationKey: ["handleAcceptContract"],
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getRoomRented"] });
+      queryClient.invalidateQueries({ queryKey: ["getRoomForRent"] });
       queryClient.invalidateQueries({ queryKey: ["getAllRequestsCancelRoom"] });
     },
   });

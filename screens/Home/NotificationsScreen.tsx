@@ -66,7 +66,7 @@ NotificationsScreen.NotificationItem = ({ notificationItem }: { notificationItem
 
         <View style={{ marginLeft: 10 }}>
           <Text style={{ ...styles.HeadingNoti, color: getColor("primary") }}>{convertString(notificationItem.type)}</Text>
-          <Text style={{ paddingVertical: 10 }}>{notificationItem.content}</Text>
+          <Text style={{ paddingVertical: 10, paddingHorizontal: 5 }}>{notificationItem.content}</Text>
           <Text>Thời gian : {formatDate(new Date(notificationItem.createdAt))}</Text>
         </View>
       </View>
